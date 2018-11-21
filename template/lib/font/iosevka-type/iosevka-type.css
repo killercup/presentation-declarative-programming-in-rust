@@ -1,0 +1,41 @@
+@font-face {
+	font-family: 'Iosevka';
+	src: url('iosevka-type-light.woff2') format('woff2');
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Iosevka';
+	src: url('iosevka-type-lightitalic.woff2') format('woff2');
+	font-weight: 300;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Iosevka';
+	src: url('iosevka-type-regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Iosevka';
+	src: url('iosevka-type-italic.woff2') format('woff2');
+	font-weight: 400;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Iosevka';
+	src: url('iosevka-type-bold.woff2') format('woff2');
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Iosevka';
+	src: url('iosevka-type-bolditalic.woff2') format('woff2');
+	font-weight: 600;
+	font-style: italic;
+}
