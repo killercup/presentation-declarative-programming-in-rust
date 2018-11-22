@@ -210,7 +210,7 @@ depends on the change: maybe a lot</li>
 <li><p>How easy is it to <strong>identifying the core concepts</strong>?</p>
 <p>find elements up to a limit?</p></li>
 </ol>
-<p>And we totally forgot about short circuiting after we’ve found 5 elements!</p>
+<p>DONT SAY: We totally forgot about short circuiting after we’ve found 5 elements!</p>
 </aside>
 </section><section id="iterators" class="slide level2">
 <h2>Iterators</h2>
@@ -228,6 +228,8 @@ add combinators, names very similar to other PLs</li>
 <li><p>How easy is it to <strong>identifying the core concepts</strong>?</p>
 <p>The method names are the concepts used!</p></li>
 </ol>
+<p>And this is even faster than the loop we’ve just written: Iterators are lazy. This will stop after the 5th matched element, but in our loop we forgot to write the early return!</p>
+<p>So we have not only abstracted over the manual iteration but by declaring our intent to only want 5 elements our abstraction was able to do the early return for us, too.</p>
 </aside>
 </section></section>
 <section><section id="parse-json" class="title-slide slide level1"><h1>Parse JSON</h1></section><section id="first-try" class="slide level2">
@@ -383,6 +385,25 @@ add combinators, names very similar to other PLs</li>
 </ol>
 <p>Subcommands = enums.</p>
 </aside>
+</section></section>
+<section><section id="generic-type-driven-behavior" class="title-slide slide level1"><h1>Generic, type-driven behavior</h1></section><section id="huh" class="slide level2">
+<h2>Huh?</h2>
+<p>We write generic functions</p>
+<p>and the concrete types will declare what the user wants</p>
+<aside class="notes">
+
+</aside>
+</section><section id="read-json-data-from-a-http-request" class="slide level2">
+<h2>Read JSON data from a HTTP request</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">fn</span> handle_login(req: Request) -&gt; Response <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="kw">let</span> data: LoginData = <span class="pp">serde_json::</span>from_reader(req.body())?;</a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="cn">Ok</span>(<span class="pp">format!</span>(<span class="st">&quot;hello, {}&quot;</span>, data.name))</a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="op">}</span></a></code></pre></div>
+</section><section id="extractors" class="slide level2">
+<h2>Extractors</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">fn</span> handle_login(data: Json&lt;LoginData&gt;) -&gt; Response <span class="op">{</span></a>
+<a class="sourceLine" id="cb12-2" title="2">  <span class="cn">Ok</span>(<span class="pp">format!</span>(<span class="st">&quot;hello, {}&quot;</span>, data.name))</a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="op">}</span></a></code></pre></div>
 </section></section>
 <section><section id="thanks" class="title-slide slide level1"><h1>Thanks!</h1></section><section id="have-a-great-lunch" class="slide level2">
 <h2>Have a great lunch!</h2>
