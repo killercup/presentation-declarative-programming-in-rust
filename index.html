@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Pascal Hertleif">
+  <meta name="dcterms.date" content="2018-09-05">
+  <title>Declarative programming in Rust</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="template/css/reveal.css">
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="template/css/theme/pascal-light.css" id="theme">
+  <link rel="stylesheet" href="template/a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'template/css/print/pdf.css' : 'template/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="template/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Declarative programming in Rust</h1>
+  <p class="author">Pascal Hertleif</p>
+  <p class="date">2018-09-05</p>
+</section>
+
+<section id="hi-im-pascal-hertleif" class="slide level2">
+<h2>Hi, I’m Pascal Hertleif</h2>
+<ul>
+<li>Web dev &amp; Rust</li>
+<li>Co-organizer of <a href="http://rust.cologne/">Rust Cologne</a></li>
+<li>{<a href="https://twitter.com/killercup">twitter</a>,<a href="https://github.com/killercup">github</a>}.com/killercup</li>
+<li>Rust-centric blog: <a href="https://deterministic.space/">deterministic.space</a></li>
+</ul>
+<aside class="notes">
+<ul>
+<li>I’ve been working with Rust since early 2014</li>
+<li>I have stickers!</li>
+</ul>
+</aside>
+</section>
+<section><section id="what-is-a-computer-program" class="title-slide slide level1"><h1>What is a computer program?</h1></section><section id="simply-put" class="slide level2">
+<h2>Simply put,</h2>
+<ul>
+<li>you tell a computer what to do,</li>
+<li>in tiny steps, specific instructions.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>This is imperative.</li>
+<li>Hard to reason about the general behavior of a program</li>
+</ul>
+</div>
+</section><section class="slide level2">
+
+<p>“This is RustFest, Pascal, not AssemblyCamp”</p>
+<aside class="notes">
+<p>Let’s just say you need abstractions to not completely get lost</p>
+<p>same as in real life</p>
+<p>When I ask you for directions, “take the bus to foobar station” is something I can work with; being told which streets to take for how many steps will surely result in me getting lost somewhere in Rome. At least here I can get some great coffee wherever I go.</p>
+</aside>
+</section></section>
+<section><section id="maintainable-code" class="title-slide slide level1"><h1>Maintainable code</h1></section><section id="is-my-code-maintainable" class="slide level2">
+<h2>Is my code maintainable?</h2>
+<div>
+<ol type="1">
+<li class="fragment">How much do I need to <strong>read</strong> to understand what’s going on?</li>
+<li class="fragment">How much do I need to <strong>write</strong> to make a change?</li>
+<li class="fragment">How easy is it to <strong>identifying the core concepts</strong>?</li>
+</ol>
+</div>
+<aside class="notes">
+<p>Here are a number of somewhat arbitrary questions to benchmark your code base</p>
+<p>We’ll use them later one on some examples</p>
+<p>Since this is a very broad topic, the questions are very generic. Add ones that are specific to your problem domain as needed!</p>
+</aside>
+</section></section>
+<section><section id="what-is-declarative-programming" class="title-slide slide level1"><h1>What is ‘Declarative Programming’</h1></section><section id="what-instead-of-how" class="slide level2">
+<h2>What instead of How</h2>
+<p>Don’t write down all the steps how to get somewhere</p>
+<p>Try to express what you want to accomplish</p>
+</section><section id="how" class="slide level2">
+<h2>How?</h2>
+<p>Name concepts and group behavior</p>
+<p>Reduce control flow</p>
+<aside class="notes">
+<p>‘Declarative Programming’ ≠ ‘Functional Programming’</p>
+</aside>
+</section><section id="get-to-the-point" class="slide level2">
+<h2>Get to the point</h2>
+</section></section>
+<section><section id="declarative-code-in-rust" class="title-slide slide level1"><h1>Declarative code in Rust</h1></section><section id="by-example" class="slide level2">
+<h2>By example</h2>
+<p>Rust differentiates data from behavior.</p>
+<p>Let’s look at the intersection: Data transformation</p>
+</section></section>
+<section><section id="loops" class="title-slide slide level1"><h1>Loops</h1></section><section id="find-the-first-element-that-ends-with-m" class="slide level2">
+<h2>Find the first element that ends with “m”</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">let</span> xs = <span class="pp">vec!</span><span class="op">[</span><span class="st">&quot;lorem&quot;</span>, <span class="st">&quot;ipsum&quot;</span>, <span class="st">&quot;dolor&quot;</span><span class="op">]</span>;</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">for</span> x <span class="kw">in</span> &amp;xs <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="kw">if</span> x.ends_with(<span class="ch">&#39;m&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="kw">return</span> <span class="cn">Some</span>(x);</a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">}</span></a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="cn">None</span></a></code></pre></div>
+<aside class="notes">
+<p>Since we’re in Italy I thought I’d go with latin instead of “foobar”.</p>
+<ol type="1">
+<li><p>How much do I need to <strong>read</strong> to understand what’s going on?</p>
+trivial</li>
+<li><p>How much do I need to <strong>write</strong> to make a change?</p>
+depdends</li>
+<li><p>How easy is it to <strong>identifying the core concepts</strong>?</p>
+<p><code>for</code> <code>if</code> <code>return</code> &lt;- a lot of control flow!</p></li>
+</ol>
+</aside>
+</section><section id="new-requirements-find-up-to-5-elements-that-end-with-m" class="slide level2">
+<h2>New requirements! Find up to 5 elements that end with “m”</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">let</span> xs = <span class="pp">vec!</span><span class="op">[</span><span class="st">&quot;lorem&quot;</span>, <span class="st">&quot;ipsum&quot;</span>, <span class="st">&quot;dolor&quot;</span><span class="op">]</span>;</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">let</span> <span class="kw">mut</span> result = <span class="dt">Vec</span>::new();</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">for</span> x <span class="kw">in</span> &amp;xs <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="kw">if</span> result.len() &lt;= <span class="dv">5</span> &amp;&amp; x.ends_with(<span class="ch">&#39;m&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    result.push(x);</a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="op">}</span></a>
+<a class="sourceLine" id="cb2-8" title="8">result</a></code></pre></div>
+<aside class="notes">
+<ol type="1">
+<li><p>How much do I need to <strong>read</strong> to understand what’s going on?</p>
+It’s okay if you’re used to reading this code of code? nuances in the details: find that <code>5</code>, parse <code>&lt;=</code> correctly</li>
+<li><p>How much do I need to <strong>write</strong> to make a change?</p>
+depends on the change: maybe a lot</li>
+<li><p>How easy is it to <strong>identifying the core concepts</strong>?</p>
+<p>find elements up to a limit?</p></li>
+</ol>
+<p>And we totally forgot about short circuiting after we’ve found 5 elements!</p>
+</aside>
+</section><section id="iterators" class="slide level2">
+<h2>Iterators</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">let</span> xs = <span class="pp">vec!</span><span class="op">[</span><span class="st">&quot;lorem&quot;</span>, <span class="st">&quot;ipsum&quot;</span>, <span class="st">&quot;dolor&quot;</span><span class="op">]</span>;</a>
+<a class="sourceLine" id="cb3-2" title="2">xs.iter()</a>
+<a class="sourceLine" id="cb3-3" title="3">  .filter(|item| item.ends_with(<span class="ch">&#39;m&#39;</span>))</a>
+<a class="sourceLine" id="cb3-4" title="4">  .take(<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb3-5" title="5">  .collect()</a></code></pre></div>
+<aside class="notes">
+<ol type="1">
+<li><p>How much do I need to <strong>read</strong> to understand what’s going on?</p>
+4 lines</li>
+<li><p>How much do I need to <strong>write</strong> to make a change?</p>
+add combinators, names very similar to other PLs</li>
+<li><p>How easy is it to <strong>identifying the core concepts</strong>?</p>
+<p>The method names are the concepts used!</p></li>
+</ol>
+</aside>
+</section></section>
+<section><section id="parse-json" class="title-slide slide level1"><h1>Parse JSON</h1></section><section id="first-try" class="slide level2">
+<h2>First try</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">let</span> v: <span class="pp">serde_json::</span>Value =</a>
+<a class="sourceLine" id="cb4-2" title="2">    <span class="pp">serde_json::</span>from_str(<span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">a</span><span class="sc">\&quot;</span><span class="st">: 4}&quot;</span>)?;</a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(value) = v<span class="op">[</span><span class="st">&quot;a&quot;</span><span class="op">]</span>.as_u64() <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span>, value);</a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="op">}</span></a></code></pre></div>
+<aside class="notes">
+<p>Simple enough; it’s a trivial example after all.</p>
+<ol type="1">
+<li>How much do I need to <strong>read</strong>? Four lines: understanding <code>v[&quot;a&quot;].as_u64()</code></li>
+<li>How much do I need to <strong>write</strong> to make a change? Now it gets interesting: It depends!</li>
+<li>How easy is it to <strong>identifying the core concepts</strong>? Too little code to tell what the core concept is really.</li>
+</ol>
+</aside>
+</section><section id="new-requirements-this-structure-now-has-three-fields" class="slide level2">
+<h2>New requirements! This structure now has three fields</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">struct</span> Response <span class="op">{</span> a: <span class="dt">u64</span>, b: <span class="dt">u64</span>, c: <span class="dt">u64</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">let</span> v: <span class="pp">serde_json::</span>Value =</a>
+<a class="sourceLine" id="cb5-4" title="4">    <span class="pp">serde_json::</span>from_str(<span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">a</span><span class="sc">\&quot;</span><span class="st">: 4, </span><span class="sc">\&quot;</span><span class="st">b</span><span class="sc">\&quot;</span><span class="st">: 8, </span><span class="sc">\&quot;</span><span class="st">c</span><span class="sc">\&quot;</span><span class="st">: 15}&quot;</span>)?;</a>
+<a class="sourceLine" id="cb5-5" title="5"></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="kw">let</span> a = <span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(value) = v<span class="op">[</span><span class="st">&quot;a&quot;</span><span class="op">]</span>.as_u64() <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-7" title="7">    value</a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-9" title="9">    <span class="kw">return</span> <span class="cn">Err</span>(<span class="st">&quot;invalid&quot;</span>.into())</a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="op">}</span>;</a>
+<a class="sourceLine" id="cb5-11" title="11"></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="kw">let</span> b = <span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(value) = v<span class="op">[</span><span class="st">&quot;b&quot;</span><span class="op">]</span>.as_u64() <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-13" title="13">    value</a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-15" title="15">    <span class="kw">return</span> <span class="cn">Err</span>(<span class="st">&quot;invalid&quot;</span>.into())</a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="op">}</span>;</a>
+<a class="sourceLine" id="cb5-17" title="17"></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="kw">let</span> c = <span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(value) = v<span class="op">[</span><span class="st">&quot;c&quot;</span><span class="op">]</span>.as_u64() <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-19" title="19">    value</a>
+<a class="sourceLine" id="cb5-20" title="20"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-21" title="21">    <span class="kw">return</span> <span class="cn">Err</span>(<span class="st">&quot;invalid&quot;</span>.into())</a>
+<a class="sourceLine" id="cb5-22" title="22"><span class="op">}</span>;</a>
+<a class="sourceLine" id="cb5-23" title="23"></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="kw">let</span> res = Response <span class="op">{</span> a, b, c <span class="op">}</span>;</a></code></pre></div>
+<aside class="notes">
+<p>Okay, now it got complicated.</p>
+<p>And it will get worse when we add more fields!</p>
+<p>But is it really necessary? This looks very generic and not specific to our <em>actual</em> problem.</p>
+<ol type="1">
+<li>How much do I need to <strong>read</strong>? Lots</li>
+<li>How much do I need to <strong>write</strong> to make a change? Lots</li>
+<li>How easy is it to <strong>identifying the core concepts</strong>? <code>if let Some()</code> whatever</li>
+</ol>
+</aside>
+</section><section id="derive-it." class="slide level2">
+<h2>Derive it.</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb6-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>Deserialize<span class="at">)]</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">struct</span> Response <span class="op">{</span> a: <span class="dt">u64</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="kw">let</span> v: Response =</a>
+<a class="sourceLine" id="cb6-5" title="5">    <span class="pp">serde_json::</span>from_str(<span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">a</span><span class="sc">\&quot;</span><span class="st">: 42}&quot;</span>)?;</a></code></pre></div>
+<aside class="notes">
+<p>Wow, that’s super neat!</p>
+<p>And: This generates better code, too: It doesn’t allocate a <code>Value</code> and it has better errors, too!</p>
+<ol type="1">
+<li>How much do I need to <strong>read</strong>? just the struct really</li>
+<li>How much do I need to <strong>write</strong> to make a change? add to the struct; maybe attributes</li>
+<li>How easy is it to <strong>identifying the core concepts</strong>? yes: deserialization!</li>
+</ol>
+</aside>
+</section></section>
+<section><section id="command-line-arguments" class="title-slide slide level1"><h1>Command Line Arguments</h1></section><section id="plain-old-std" class="slide level2">
+<h2>Plain old <code>std</code></h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">let</span> args = <span class="pp">std::env::</span>args();</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">let</span> input = args.next()</a>
+<a class="sourceLine" id="cb7-3" title="3">    .expect(<span class="st">&quot;USAGE: tool &lt;input&gt; &lt;output&gt;&quot;</span>);</a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="kw">let</span> output = args.next()</a>
+<a class="sourceLine" id="cb7-5" title="5">    .expect(<span class="st">&quot;USAGE: tool &lt;input&gt; &lt;output&gt;&quot;</span>);</a></code></pre></div>
+<aside class="notes">
+<p>Simple enough: We want our tool to read two CLI args.</p>
+<p>Hm. Can we make it use flags instead of positional arguments?</p>
+<ol type="1">
+<li>How much do I need to <strong>read</strong>? lots</li>
+<li>How much do I need to <strong>write</strong> to make a change? depends on what you need: a parser maybe?</li>
+<li>How easy is it to <strong>identifying the core concepts</strong>? easy: argument positions</li>
+</ol>
+</aside>
+</section><section id="getopts" class="slide level2">
+<h2>getopts</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">let</span> <span class="kw">mut</span> opts = <span class="pp">Options::</span>new();</a>
+<a class="sourceLine" id="cb8-2" title="2">opts.optopt(<span class="st">&quot;o&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;set output file name&quot;</span>, <span class="st">&quot;NAME&quot;</span>);</a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="kw">let</span> matches = <span class="kw">match</span> opts.parse(&amp;args<span class="op">[</span><span class="dv">1</span>..<span class="op">]</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="cn">Ok</span>(m) =&gt; <span class="op">{</span> m <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="cn">Err</span>(f) =&gt; <span class="op">{</span> <span class="pp">panic!</span>(f.to_string()) <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="op">}</span>;</a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="kw">let</span> output = matches.opt_str(<span class="st">&quot;o&quot;</span>);</a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="kw">let</span> input = <span class="kw">if</span> !matches.free.is_empty() <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-9" title="9">    matches.free<span class="op">[</span><span class="dv">0</span><span class="op">]</span>.clone()</a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-11" title="11">    print_usage(&amp;program, opts);</a>
+<a class="sourceLine" id="cb8-12" title="12">    <span class="kw">return</span>;</a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="op">}</span>;</a></code></pre></div>
+<aside class="notes">
+<p>This is quite a lot of stuff. I wonder if there is way to abstract over it?</p>
+<ol type="1">
+<li>How much do I need to <strong>read</strong>? lots</li>
+<li>How much do I need to <strong>write</strong> to make a change? not so much</li>
+<li>How easy is it to <strong>identifying the core concepts</strong>? argument types have names, but parsing their content is up to you</li>
+</ol>
+</aside>
+</section><section id="clap" class="slide level2">
+<h2>Clap</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">let</span> matches = <span class="pp">App::</span>new(<span class="st">&quot;My Super Program&quot;</span>)</a>
+<a class="sourceLine" id="cb9-2" title="2">    .arg(<span class="pp">Arg::</span>with_name(<span class="st">&quot;output&quot;</span>)</a>
+<a class="sourceLine" id="cb9-3" title="3">        .help(<span class="st">&quot;Sets a output file&quot;</span>)</a>
+<a class="sourceLine" id="cb9-4" title="4">        .short(<span class="st">&quot;o&quot;</span>).long(<span class="st">&quot;output&quot;</span>)</a>
+<a class="sourceLine" id="cb9-5" title="5">        .takes_value(<span class="cn">true</span>))</a>
+<a class="sourceLine" id="cb9-6" title="6">    .arg(<span class="pp">Arg::</span>with_name(<span class="st">&quot;INPUT&quot;</span>)</a>
+<a class="sourceLine" id="cb9-7" title="7">        .help(<span class="st">&quot;Sets the input file to use&quot;</span>)</a>
+<a class="sourceLine" id="cb9-8" title="8">        .required(<span class="cn">true</span>).index(<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb9-9" title="9">    .get_matches();</a>
+<a class="sourceLine" id="cb9-10" title="10"></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(input) = matches.value_of(<span class="st">&quot;INPUT&quot;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-12" title="12">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb9-13" title="13"><span class="op">}</span></a></code></pre></div>
+<aside class="notes">
+<p>This is pretty good already. Somehow, we are back to writing code that converts data, though. Weird.</p>
+<ol type="1">
+<li>How much do I need to <strong>read</strong>? glance over it</li>
+<li>How much do I need to <strong>write</strong> to make a change? little</li>
+<li>How easy is it to <strong>identifying the core concepts</strong>? easy! but parsing their content is up to you</li>
+</ol>
+</aside>
+</section><section id="isnt-this-a-data-structure-too" class="slide level2">
+<h2>Isn’t this a data structure, too?</h2>
+</section><section id="derive-it.-1" class="slide level2">
+<h2>Derive it.</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb10-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>StructOpt<span class="at">)]</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">struct</span> Cli <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="co">/// Sets the input file to use</span></a>
+<a class="sourceLine" id="cb10-4" title="4">    input: <span class="dt">String</span>,</a>
+<a class="sourceLine" id="cb10-5" title="5">    <span class="co">/// Sets a output file</span></a>
+<a class="sourceLine" id="cb10-6" title="6">    <span class="at">#[</span>structopt<span class="at">(</span>short <span class="at">=</span> <span class="st">&quot;o&quot;</span><span class="at">,</span> long <span class="at">=</span> <span class="st">&quot;output&quot;</span><span class="at">)]</span></a>
+<a class="sourceLine" id="cb10-7" title="7">    output: <span class="dt">String</span>,</a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="op">}</span></a></code></pre></div>
+<aside class="notes">
+<p>Woah.</p>
+<p>This is super concise.</p>
+<ol type="1">
+<li>How much do I need to <strong>read</strong>? glance at the struct</li>
+<li>How much do I need to <strong>write</strong> to make a change? add a field, maybe attributes</li>
+<li>How easy is it to <strong>identifying the core concepts</strong>? super easy: the type conversions – incl. Option and Vec – are front and center</li>
+</ol>
+<p>Subcommands = enums.</p>
+</aside>
+</section></section>
+<section><section id="thanks" class="title-slide slide level1"><h1>Thanks!</h1></section><section id="have-a-great-lunch" class="slide level2">
+<h2>Have a great lunch!</h2>
+<p>I’m Pascal and I want you to talk to me!</p>
+<p>{<a href="https://twitter.com/killercup">twitter</a>,<a href="https://github.com/killercup">github</a>}.com/killercup</p>
+<p>Slides: <a href="https://git.io/declarative-programming-in-rust">git.io/declarative-programming-in-rust</a></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="template/lib/js/head.min.js"></script>
+  <script src="template/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display a presentation progress bar
+        progress: true,
+        // Display the page number of the current slide
+        slideNumber: true,
+        // Push each slide change to the browser history
+        history: true,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'template/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'template/plugin/zoom-js/zoom.js', async: true },
+          { src: 'template/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
