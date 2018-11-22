@@ -178,7 +178,7 @@ result
 
     find elements up to a limit?
 
-And we totally forgot about short circuiting after we've found 5 elements!
+DONT SAY: We totally forgot about short circuiting after we've found 5 elements!
 :::
 
 ## Iterators
@@ -202,6 +202,14 @@ xs.iter()
 3. How easy is it to **identifying the core concepts**?
 
     The method names are the concepts used!
+
+And this is even faster than the loop we've just written:
+Iterators are lazy. This will stop after the 5th matched element,
+but in our loop we forgot to write the early return!
+
+So we have not only abstracted over the manual iteration
+but by declaring our intent to only want 5 elements
+our abstraction was able to do the early return for us, too.
 
 :::
 
@@ -429,6 +437,36 @@ This is super concise.
 Subcommands = enums.
 
 :::
+
+# Generic, type-driven behavior
+
+## Huh?
+
+We write generic functions
+
+and the concrete types will declare what the user wants
+
+::: notes
+
+
+:::
+
+## Read JSON data from a HTTP request
+
+```rust
+fn handle_login(req: Request) -> Response {
+  let data: LoginData = serde_json::from_reader(req.body())?;
+  Ok(format!("hello, {}", data.name))
+}
+```
+
+## Extractors
+
+```rust
+fn handle_login(data: Json<LoginData>) -> Response {
+  Ok(format!("hello, {}", data.name))
+}
+```
 
 # Thanks!
 
