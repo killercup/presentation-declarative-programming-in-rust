@@ -5,7 +5,6 @@ date: 2018-09-05
 categories:
 - rust
 - presentation
-theme: pascal-light
 progress: true
 slideNumber: true
 history: true
@@ -604,7 +603,7 @@ How does this work?
 
 - - -
 
-![](TODO.jpg "Any sufficiently high abstraction is indistinguishable from magic.")
+!["Any sufficiently high abstraction is indistinguishable from magic."](images/sudden-clarity.jpg){.stretch}
 
 ::: notes
 

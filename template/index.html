@@ -25,14 +25,14 @@ $endif$
 $if(quotes)$
       q { quotes: "“" "”" "‘" "’"; }
 $endif$
+$if(highlighting-css)$
+  $highlighting-css$
+$endif$
   </style>
 $if(theme)$
   <link rel="stylesheet" href="$revealjs-url$/css/theme/$theme$.css" id="theme">
 $else$
   <link rel="stylesheet" href="$revealjs-url$/css/theme/black.css" id="theme">
-$endif$
-$if(highlighting-css)$
-  <link rel="stylesheet" href="$revealjs-url$/$highlighting-css$">
 $endif$
 $for(css)$
   <link rel="stylesheet" href="$css$"/>

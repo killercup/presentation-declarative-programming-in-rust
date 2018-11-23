@@ -1,12 +1,32 @@
 INPUT ?= Readme
+IMAGES_FOLDER ?= $(INPUT_FOLDER)/images
+INPUT_FOLDER ?= $(shell pwd)
+OUTPUT_FOLDER ?= $(shell pwd)/dist
 
 slides:
-	pandoc $(INPUT).md \
+	@pandoc $(INPUT).md \
 	--to revealjs \
-	--template template/index.html \
 	--output index.html \
+	--template template/index.html \
+	-V theme=pascal-light \
 	-V revealjs-url=template \
-	-V progress=true \
-	-V slideNumber=true \
-	-V history=true \
-	--standalone --slide-level 2
+	--standalone --slide-level 2 \
+	# --self-contained
+
+pdf: slides
+	@echo "This might take a while, I'll beep when it's done"
+	@echo ""
+	npx decktape reveal `pwd`/index.html $(INPUT).pdf
+	@echo -e "\a"
+
+beamer:
+	cp -R $(IMAGES_FOLDER) $(OUTPUT_FOLDER); \
+	cd $(INPUT_FOLDER); \
+	pandoc $(INPUT).md \
+	--base-header-level=2 \
+	--table-of-contents \
+	$(FILTER_OPTIONS) \
+	--default-image-extension=pdf \
+	--pdf-engine=xelatex \
+	--standalone \
+	--to=beamer --output=$(OUTPUT_FOLDER)/index.pdf;
