@@ -423,9 +423,7 @@ struct Cli {
 
 ::: notes
 
-Woah.
-
-This is super concise.
+Woah. This is super concise.
 
 1. How much do I need to **read**?
     glance at the struct
@@ -462,6 +460,17 @@ fn handle_login(req: Request) -> Response {
 }
 ```
 
+::: notes
+
+1. How much do I need to **read**?
+    Here: 3 lines
+2. How much do I need to **write** to make a change?
+    Depends: Three lines at minimum it seems
+3. How easy is it to **identifying the core concepts**?
+    Okay-ish. There is a data structure in there, and we expect a `name` to be present.
+
+:::
+
 ## Extractors
 
 ```rust
@@ -480,13 +489,24 @@ How does this work?
 - Allows you to express which data you want extracted
 - Composition: Tuples of extractors
 
+1. How much do I need to **read**?
+    Function signature
+2. How much do I need to **write** to make a change?
+    data type, function signature
+3. How easy is it to **identifying the core concepts**?
+    easy: signature specifies you want to extract JSON data
+
 :::
 
-# Any sufficiently high abstraction is indistinguishable from magic.
+# Magic budget
+
+- - -
+
+![](TODO.jpg "Any sufficiently high abstraction is indistinguishable from magic.")
 
 ::: notes
 
-Beware of a project's Magic budget
+Beware of a project's "Magic budget"
 
 cf. [weirdness budget](https://www.movellas.com/de/blog/show/201207181556092857/building-worlds-and-the-weirdness-budget)
 and Steve's post [Language Strangeness Budget](https://words.steveklabnik.com/the-language-strangeness-budget)
@@ -497,7 +517,7 @@ and Steve's post [Language Strangeness Budget](https://words.steveklabnik.com/th
 
 . . .
 
-“This is RustFest, Pascal, not Haskell Symposium
+“This is RustFest, Pascal, not Haskell Symposium”
 
 ::: notes
 
@@ -507,10 +527,33 @@ I'm kidding, I'm kidding!
 
 ## What is magic?
 
-Code whose behavior is hard to predict or remember
+Code whose behavior is hard to predict (or remember)
 
 > - Macros you don't understand yet
 > - Very generic code
+> - But also: Very concise and 'clever' code
+
+::: notes
+
+In general, things that are 'unusual' to us can appear as though they are magic
+
+Have empathy towards your coworkers who might be used to different things than you are
+
+:::
+
+## You can turn that magic into science, using the right tools
+
+e.g. using `cargo expand`
+
+. . .
+
+That often only moves the complexity but doesn't resolve it
+
+::: notes
+
+people need to learn the tools and remember to use them
+
+:::
 
 
 # Thanks!

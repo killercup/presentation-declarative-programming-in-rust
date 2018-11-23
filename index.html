@@ -376,8 +376,7 @@ add combinators, names very similar to other PLs</li>
 <a class="sourceLine" id="cb10-7" title="7">    output: <span class="dt">String</span>,</a>
 <a class="sourceLine" id="cb10-8" title="8"><span class="op">}</span></a></code></pre></div>
 <aside class="notes">
-<p>Woah.</p>
-<p>This is super concise.</p>
+<p>Woah. This is super concise.</p>
 <ol type="1">
 <li>How much do I need to <strong>read</strong>? glance at the struct</li>
 <li>How much do I need to <strong>write</strong> to make a change? add a field, maybe attributes</li>
@@ -401,6 +400,13 @@ add combinators, names very similar to other PLs</li>
 <a class="sourceLine" id="cb11-4" title="4">    <span class="kw">let</span> name = data<span class="op">[</span><span class="st">&quot;name&quot;</span><span class="op">]</span>.as_str().unwrap_or(<span class="st">&quot;Nobody&quot;</span>);</a>
 <a class="sourceLine" id="cb11-5" title="5">    <span class="cn">Ok</span>(<span class="pp">format!</span>(<span class="st">&quot;hello, {}&quot;</span>, name))</a>
 <a class="sourceLine" id="cb11-6" title="6"><span class="op">}</span></a></code></pre></div>
+<aside class="notes">
+<ol type="1">
+<li>How much do I need to <strong>read</strong>? Here: 3 lines</li>
+<li>How much do I need to <strong>write</strong> to make a change? Depends: Three lines at minimum it seems</li>
+<li>How easy is it to <strong>identifying the core concepts</strong>? Okay-ish. There is a data structure in there, and we expect a <code>name</code> to be present.</li>
+</ol>
+</aside>
 </section><section id="extractors" class="slide level2">
 <h2>Extractors</h2>
 <div class="sourceCode" id="cb12"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">fn</span> handle_login(data: Json&lt;LoginData&gt;) -&gt; Response <span class="op">{</span></a>
@@ -414,23 +420,49 @@ add combinators, names very similar to other PLs</li>
 <li>Allows you to express which data you want extracted</li>
 <li>Composition: Tuples of extractors</li>
 </ul>
+<ol type="1">
+<li>How much do I need to <strong>read</strong>? Function signature</li>
+<li>How much do I need to <strong>write</strong> to make a change? data type, function signature</li>
+<li>How easy is it to <strong>identifying the core concepts</strong>? easy: signature specifies you want to extract JSON data</li>
+</ol>
 </aside>
 </section></section>
-<section><section id="any-sufficiently-high-abstraction-is-indistinguishable-from-magic." class="title-slide slide level1"><h1>Any sufficiently high abstraction is indistinguishable from magic.</h1></section><section id="monads" class="slide level2">
+<section><section id="magic-budget" class="title-slide slide level1"><h1>Magic budget</h1></section><section class="slide level2">
+
+<p><img data-src="TODO.jpg" title="Any sufficiently high abstraction is indistinguishable from magic." /></p>
+<aside class="notes">
+<p>Beware of a project’s “Magic budget”</p>
+<p>cf. <a href="https://www.movellas.com/de/blog/show/201207181556092857/building-worlds-and-the-weirdness-budget">weirdness budget</a> and Steve’s post <a href="https://words.steveklabnik.com/the-language-strangeness-budget">Language Strangeness Budget</a></p>
+</aside>
+</section><section id="monads" class="slide level2">
 <h2>Monads</h2>
 <div class="fragment">
-<p>“This is RustFest, Pascal, not Haskell Symposium</p>
+<p>“This is RustFest, Pascal, not Haskell Symposium”</p>
 <aside class="notes">
 <p>I’m kidding, I’m kidding!</p>
 </aside>
 </div>
 </section><section id="what-is-magic" class="slide level2">
 <h2>What is magic?</h2>
-<p>Code whose behavior is hard to predict or remember</p>
+<p>Code whose behavior is hard to predict (or remember)</p>
 <ul>
 <li class="fragment">Macros you don’t understand yet</li>
 <li class="fragment">Very generic code</li>
+<li class="fragment">But also: Very concise and ‘clever’ code</li>
 </ul>
+<aside class="notes">
+<p>In general, things that are ‘unusual’ to us can appear as though they are magic</p>
+<p>Have empathy towards your coworkers who might be used to different things than you are</p>
+</aside>
+</section><section id="you-can-turn-that-magic-into-science-using-the-right-tools" class="slide level2">
+<h2>You can turn that magic into science, using the right tools</h2>
+<p>e.g. using <code>cargo expand</code></p>
+<div class="fragment">
+<p>That often only moves the complexity but doesn’t resolve it</p>
+<aside class="notes">
+<p>people need to learn the tools and remember to use them</p>
+</aside>
+</div>
 </section></section>
 <section><section id="thanks" class="title-slide slide level1"><h1>Thanks!</h1></section><section id="have-a-great-lunch" class="slide level2">
 <h2>Have a great lunch!</h2>
