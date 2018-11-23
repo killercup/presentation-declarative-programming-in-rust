@@ -396,14 +396,41 @@ add combinators, names very similar to other PLs</li>
 </section><section id="read-json-data-from-a-http-request" class="slide level2">
 <h2>Read JSON data from a HTTP request</h2>
 <div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">fn</span> handle_login(req: Request) -&gt; Response <span class="op">{</span></a>
-<a class="sourceLine" id="cb11-2" title="2">  <span class="kw">let</span> data: LoginData = <span class="pp">serde_json::</span>from_reader(req.body())?;</a>
-<a class="sourceLine" id="cb11-3" title="3">  <span class="cn">Ok</span>(<span class="pp">format!</span>(<span class="st">&quot;hello, {}&quot;</span>, data.name))</a>
-<a class="sourceLine" id="cb11-4" title="4"><span class="op">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-2" title="2">    <span class="kw">let</span> data: <span class="pp">serde_json::</span>Value =</a>
+<a class="sourceLine" id="cb11-3" title="3">        <span class="pp">serde_json::</span>from_reader(req.body())?;</a>
+<a class="sourceLine" id="cb11-4" title="4">    <span class="kw">let</span> name = data<span class="op">[</span><span class="st">&quot;name&quot;</span><span class="op">]</span>.as_str().unwrap_or(<span class="st">&quot;Nobody&quot;</span>);</a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="cn">Ok</span>(<span class="pp">format!</span>(<span class="st">&quot;hello, {}&quot;</span>, name))</a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="op">}</span></a></code></pre></div>
 </section><section id="extractors" class="slide level2">
 <h2>Extractors</h2>
 <div class="sourceCode" id="cb12"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">fn</span> handle_login(data: Json&lt;LoginData&gt;) -&gt; Response <span class="op">{</span></a>
-<a class="sourceLine" id="cb12-2" title="2">  <span class="cn">Ok</span>(<span class="pp">format!</span>(<span class="st">&quot;hello, {}&quot;</span>, data.name))</a>
+<a class="sourceLine" id="cb12-2" title="2">    <span class="cn">Ok</span>(<span class="pp">format!</span>(<span class="st">&quot;hello, {}&quot;</span>, data.name))</a>
 <a class="sourceLine" id="cb12-3" title="3"><span class="op">}</span></a></code></pre></div>
+<aside class="notes">
+<p>This is from actix-web, but Rocket has something similar, and Aaron’s tide uses extractors, too</p>
+<p>How does this work?</p>
+<ul>
+<li><code>Json</code> is a type that implements the <code>FromRequest</code> trait</li>
+<li>Allows you to express which data you want extracted</li>
+<li>Composition: Tuples of extractors</li>
+</ul>
+</aside>
+</section></section>
+<section><section id="any-sufficiently-high-abstraction-is-indistinguishable-from-magic." class="title-slide slide level1"><h1>Any sufficiently high abstraction is indistinguishable from magic.</h1></section><section id="monads" class="slide level2">
+<h2>Monads</h2>
+<div class="fragment">
+<p>“This is RustFest, Pascal, not Haskell Symposium</p>
+<aside class="notes">
+<p>I’m kidding, I’m kidding!</p>
+</aside>
+</div>
+</section><section id="what-is-magic" class="slide level2">
+<h2>What is magic?</h2>
+<p>Code whose behavior is hard to predict or remember</p>
+<ul>
+<li class="fragment">Macros you don’t understand yet</li>
+<li class="fragment">Very generic code</li>
+</ul>
 </section></section>
 <section><section id="thanks" class="title-slide slide level1"><h1>Thanks!</h1></section><section id="have-a-great-lunch" class="slide level2">
 <h2>Have a great lunch!</h2>

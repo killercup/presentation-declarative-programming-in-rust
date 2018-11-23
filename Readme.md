@@ -455,8 +455,10 @@ and the concrete types will declare what the user wants
 
 ```rust
 fn handle_login(req: Request) -> Response {
-  let data: LoginData = serde_json::from_reader(req.body())?;
-  Ok(format!("hello, {}", data.name))
+    let data: serde_json::Value =
+        serde_json::from_reader(req.body())?;
+    let name = data["name"].as_str().unwrap_or("Nobody");
+    Ok(format!("hello, {}", name))
 }
 ```
 
@@ -464,9 +466,52 @@ fn handle_login(req: Request) -> Response {
 
 ```rust
 fn handle_login(data: Json<LoginData>) -> Response {
-  Ok(format!("hello, {}", data.name))
+    Ok(format!("hello, {}", data.name))
 }
 ```
+
+::: notes
+
+This is from actix-web, but Rocket has something similar, and Aaron's tide uses extractors, too
+
+How does this work?
+
+- `Json` is a type that implements the `FromRequest` trait
+- Allows you to express which data you want extracted
+- Composition: Tuples of extractors
+
+:::
+
+# Any sufficiently high abstraction is indistinguishable from magic.
+
+::: notes
+
+Beware of a project's Magic budget
+
+cf. [weirdness budget](https://www.movellas.com/de/blog/show/201207181556092857/building-worlds-and-the-weirdness-budget)
+and Steve's post [Language Strangeness Budget](https://words.steveklabnik.com/the-language-strangeness-budget)
+
+:::
+
+## Monads
+
+. . .
+
+“This is RustFest, Pascal, not Haskell Symposium
+
+::: notes
+
+I'm kidding, I'm kidding!
+
+:::
+
+## What is magic?
+
+Code whose behavior is hard to predict or remember
+
+> - Macros you don't understand yet
+> - Very generic code
+
 
 # Thanks!
 
