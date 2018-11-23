@@ -100,8 +100,8 @@
   <p class="date">2018-09-05</p>
 </section>
 
-<section id="hi-im-pascal-hertleif" class="slide level2">
-<h2>Hi, I’m Pascal Hertleif</h2>
+<section id="hi-im-pascal-hertleif" class="slide level1">
+<h1>Hi, I’m Pascal Hertleif</h1>
 <ul>
 <li>Dev tools team, CLI WG</li>
 <li>Co-organizer of <a href="http://rust.cologne/">Rust Cologne</a></li>
@@ -114,8 +114,15 @@
 <p>Okay. Let’s start at the beginning.</p>
 </aside>
 </section>
-<section><section id="what-is-a-computer-program" class="title-slide slide level1"><h1>What is a computer program?</h1></section><section id="simply-put" class="slide level2">
-<h2>Simply put,</h2>
+<section id="what-is-a-computer-program" class="slide level1">
+<h1>What is a computer program?</h1>
+<aside class="notes">
+<p>Oh yes, the very beginning.</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<h2 id="simply-put">Simply put,</h2>
 <ul>
 <li>you tell a computer what to do,</li>
 <li>in tiny steps, specific instructions.</li>
@@ -126,17 +133,25 @@
 <li>Hard to reason about the general behavior of a program</li>
 </ul>
 </div>
-</section><section class="slide level2">
+</section>
+<section class="slide level1">
 
 <p>“This is RustFest, Pascal, not AssemblyCamp”</p>
 <aside class="notes">
 <p>Let’s just say you need abstractions to not get lost completely</p>
 <p>same as in real life</p>
 <p>When I ask you for directions, “take bus line 5 to foobar station” is something I can probably work with; being told which streets to take for how many steps will surely result in me getting lost somewhere in Rome. At least here I can get some great coffee wherever I go.</p>
+<p>Okay, fine, but what does that have to do with declarative programming?</p>
+<p>Let’s approach this from a different perspective, then.</p>
+<p>Having maintainable code is high in demand, but it’s hard to get there.</p>
 </aside>
-</section></section>
-<section><section id="maintainable-code" class="title-slide slide level1"><h1>Maintainable code</h1></section><section id="is-my-code-maintainable" class="slide level2">
-<h2>Is my code maintainable?</h2>
+</section>
+<section id="maintainable-code" class="slide level1">
+<h1>Maintainable code</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="is-my-code-maintainable">Is my code maintainable?</h2>
 <div>
 <ol type="1">
 <li class="fragment">How much do I need to <strong>read</strong> to understand what’s going on?</li>
@@ -149,42 +164,61 @@
 <p>We’ll use them later on to evaluate some examples</p>
 <p>Since this is a very broad topic, the questions are very generic. Add ones that are specific to your problem domain as needed!</p>
 </aside>
-</section></section>
-<section><section id="what-is-declarative-programming" class="title-slide slide level1"><h1>What is ‘Declarative Programming’</h1></section><section id="what-instead-of-how" class="slide level2">
-<h2>What instead of How</h2>
+</section>
+<section id="what-is-declarative-programming" class="slide level1">
+<h1>What is ‘Declarative Programming’</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="what-instead-of-how">What instead of How</h2>
 <p>Don’t write down all the steps how to get somewhere</p>
 <p>Try to express what you want to accomplish</p>
-</section><section id="how" class="slide level2">
-<h2>How?</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="how">How?</h2>
 <p>Identify concepts and extract their behavior</p>
 <p>Abstract over control flow</p>
 <p>Compose your application from smaller pieces</p>
 <aside class="notes">
 <p>‘Declarative Programming’ ≠ ‘Functional Programming’</p>
 </aside>
-</section><section id="get-to-the-point" class="slide level2">
-<h2>Get to the point</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="get-to-the-point">Get to the point</h2>
 <aside class="notes">
 <p>This is very abstract, I know.</p>
 <p>But that’s also kind of the point:</p>
 <p>The idea is to introduce abstractions, at the right levels.</p>
 <p>If done right, we’ll end up with code that easier to reason about.</p>
 </aside>
-</section><section id="declarative-code-in-rust" class="slide level2">
-<h2>Declarative code in Rust</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="declarative-code-in-rust">Declarative code in Rust</h2>
 <aside class="notes">
 <p>What does that mean for Rust? Being able to <em>abstract</em> is one of the main features of Rust.</p>
 <p>One of its selling points is “zero-cost abstractions”. The “zero-cost-ness” is about runtime performance, however. Being able to introduce abstractions without having to worry about ending up with slow code is immensely powerful. There’s no need to rewrite your high level code when need to get high performance.</p>
 </aside>
-</section><section id="by-example" class="slide level2">
-<h2>By example</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="by-example">By example</h2>
 <aside class="notes">
 <p>This is a short talk, and I have spoken for a few minutes already. I can’t give you a recipe for instantly writing amazingly declarative code, but I can show you some example.</p>
 <p>I hope they inspire you.</p>
 </aside>
-</section></section>
-<section><section id="loops" class="title-slide slide level1"><h1>Loops</h1></section><section id="find-the-first-element-that-ends-with-m" class="slide level2">
-<h2>Find the first element that ends with “m”</h2>
+</section>
+<section id="loops" class="slide level1">
+<h1>Loops</h1>
+<aside class="notes">
+<p>Working with collections like arrays and maps is I do in practically every code base ever, so it’ll be the first example.</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<h2 id="find-the-first-element-that-ends-with-m">Find the first element that ends with “m”</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">let</span> xs = <span class="pp">vec!</span><span class="op">[</span><span class="st">&quot;lorem&quot;</span>, <span class="st">&quot;ipsum&quot;</span>, <span class="st">&quot;dolor&quot;</span><span class="op">]</span>;</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">for</span> x <span class="kw">in</span> &amp;xs <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-3" title="3">  <span class="kw">if</span> x.ends_with(<span class="ch">&#39;m&#39;</span>) <span class="op">{</span></a>
@@ -204,8 +238,10 @@ depdends</li>
 <p><code>for</code> <code>if</code> <code>return</code> &lt;- a lot of control flow!</p></li>
 </ol>
 </aside>
-</section><section id="new-requirements-find-up-to-5-elements-that-end-with-m" class="slide level2">
-<h2>New requirements! Find up to 5 elements that end with “m”</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="new-requirements-find-up-to-5-elements-that-end-with-m">New requirements! Find up to 5 elements that end with “m”</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">let</span> xs = <span class="pp">vec!</span><span class="op">[</span><span class="st">&quot;lorem&quot;</span>, <span class="st">&quot;ipsum&quot;</span>, <span class="st">&quot;dolor&quot;</span><span class="op">]</span>;</a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="kw">let</span> <span class="kw">mut</span> result = <span class="dt">Vec</span>::new();</a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="kw">for</span> x <span class="kw">in</span> &amp;xs <span class="op">{</span></a>
@@ -225,8 +261,10 @@ depends on the change: maybe a lot</li>
 </ol>
 <p>DONT SAY: We totally forgot about short circuiting after we’ve found 5 elements!</p>
 </aside>
-</section><section id="iterators" class="slide level2">
-<h2>Iterators</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="iterators">Iterators</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">let</span> xs = <span class="pp">vec!</span><span class="op">[</span><span class="st">&quot;lorem&quot;</span>, <span class="st">&quot;ipsum&quot;</span>, <span class="st">&quot;dolor&quot;</span><span class="op">]</span>;</a>
 <a class="sourceLine" id="cb3-2" title="2">xs.iter()</a>
 <a class="sourceLine" id="cb3-3" title="3">  .filter(|item| item.ends_with(<span class="ch">&#39;m&#39;</span>))</a>
@@ -246,14 +284,23 @@ add combinators, names very similar to other PLs</li>
 <p>So we have not only abstracted over the manual iteration but by declaring our intent to only want 5 elements our abstraction was able to do the early return for us, too.</p>
 <p>Also note: This is not specific to the collection type we are iterating over, not the type we’re collecting into!</p>
 </aside>
-</section><section id="another-iterator-example" class="slide level2">
-<h2>Another iterator example</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="another-iterator-example">Another iterator example</h2>
 <p>Is there an item that starts with “l”?</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">let</span> answer = xs.iter()</a>
 <a class="sourceLine" id="cb4-2" title="2">    .any(|item| item.starts_with(<span class="ch">&#39;l&#39;</span>));</a></code></pre></div>
-</section></section>
-<section><section id="parse-json" class="title-slide slide level1"><h1>Parse JSON</h1></section><section id="first-try" class="slide level2">
-<h2>First try</h2>
+</section>
+<section id="parse-json" class="slide level1">
+<h1>Parse JSON</h1>
+<aside class="notes">
+<p>The next example is about parsing data. Here, from a string of JSON, into something we can use in out code.</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<h2 id="first-try">First try</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">let</span> v: <span class="pp">serde_json::</span>Value =</a>
 <a class="sourceLine" id="cb5-2" title="2">    <span class="pp">serde_json::</span>from_str(<span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">a</span><span class="sc">\&quot;</span><span class="st">: 4}&quot;</span>)?;</a>
 <a class="sourceLine" id="cb5-3" title="3"></a>
@@ -268,8 +315,10 @@ add combinators, names very similar to other PLs</li>
 <li>How easy is it to <strong>identify the core concepts</strong>? Too little code to tell what the core concept is really.</li>
 </ol>
 </aside>
-</section><section id="new-requirements-this-structure-now-has-three-fields" class="slide level2">
-<h2>New requirements! This structure now has three fields</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="new-requirements-this-structure-now-has-three-fields">New requirements! This structure now has three fields</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">struct</span> Response <span class="op">{</span> a: <span class="dt">u64</span>, b: <span class="dt">u64</span>, c: <span class="dt">u64</span> <span class="op">}</span></a>
 <a class="sourceLine" id="cb6-2" title="2"></a>
 <a class="sourceLine" id="cb6-3" title="3"><span class="kw">let</span> v: <span class="pp">serde_json::</span>Value =</a>
@@ -304,8 +353,10 @@ add combinators, names very similar to other PLs</li>
 <li>How easy is it to <strong>identify the core concepts</strong>? <code>if let Some()</code> whatever</li>
 </ol>
 </aside>
-</section><section id="derive-it." class="slide level2">
-<h2>Derive it.</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="derive-it.">Derive it.</h2>
 <div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb7-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>Deserialize<span class="at">)]</span></a>
 <a class="sourceLine" id="cb7-2" title="2"><span class="kw">struct</span> Response <span class="op">{</span> a: <span class="dt">u64</span> <span class="op">}</span></a>
 <a class="sourceLine" id="cb7-3" title="3"></a>
@@ -320,9 +371,16 @@ add combinators, names very similar to other PLs</li>
 <li>How easy is it to <strong>identify the core concepts</strong>? yes: deserialization!</li>
 </ol>
 </aside>
-</section></section>
-<section><section id="command-line-arguments" class="title-slide slide level1"><h1>Command Line Arguments</h1></section><section id="plain-old-std" class="slide level2">
-<h2>Plain old <code>std</code></h2>
+</section>
+<section id="command-line-arguments" class="slide level1">
+<h1>Command Line Arguments</h1>
+<aside class="notes">
+<p>Did I mention I spent a lot of time thinking about CLI apps this year? So I obviously had to include an example from that area, too.</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<h2 id="plain-old-std">Plain old <code>std</code></h2>
 <div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">let</span> args = <span class="pp">std::env::</span>args();</a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="kw">let</span> input = args.next()</a>
 <a class="sourceLine" id="cb8-3" title="3">    .expect(<span class="st">&quot;USAGE: tool &lt;input&gt; &lt;output&gt;&quot;</span>);</a>
@@ -337,8 +395,10 @@ add combinators, names very similar to other PLs</li>
 </ol>
 <p>Hm. Can we make it use flags instead of positional arguments?</p>
 </aside>
-</section><section id="new-requirements-tool--o-output.file-input.file" class="slide level2">
-<h2>New requirements: <code>tool -o Output.file Input.file</code></h2>
+</section>
+<section class="slide level1">
+
+<h2 id="new-requirements-tool--o-output.file-input.file">New requirements: <code>tool -o Output.file Input.file</code></h2>
 <div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">let</span> <span class="kw">mut</span> opts = <span class="pp">Options::</span>new();</a>
 <a class="sourceLine" id="cb9-2" title="2">opts.optopt(<span class="st">&quot;o&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;set output file name&quot;</span>, <span class="st">&quot;NAME&quot;</span>);</a>
 <a class="sourceLine" id="cb9-3" title="3"><span class="kw">let</span> matches = <span class="kw">match</span> opts.parse(&amp;args<span class="op">[</span><span class="dv">1</span>..<span class="op">]</span>) <span class="op">{</span></a>
@@ -360,8 +420,10 @@ add combinators, names very similar to other PLs</li>
 <li>How easy is it to <strong>identify the core concepts</strong>? argument types have names, but parsing their content is up to you</li>
 </ol>
 </aside>
-</section><section id="clap" class="slide level2">
-<h2>Clap</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="clap">Clap</h2>
 <div class="sourceCode" id="cb10"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">let</span> matches = <span class="pp">App::</span>new(<span class="st">&quot;My Super Program&quot;</span>)</a>
 <a class="sourceLine" id="cb10-2" title="2">    .arg(<span class="pp">Arg::</span>with_name(<span class="st">&quot;output&quot;</span>)</a>
 <a class="sourceLine" id="cb10-3" title="3">        .help(<span class="st">&quot;Sets a output file&quot;</span>)</a>
@@ -383,8 +445,10 @@ add combinators, names very similar to other PLs</li>
 <li>How easy is it to <strong>identify the core concepts</strong>? easy! but parsing their content is up to you</li>
 </ol>
 </aside>
-</section><section id="isnt-this-a-data-structure-too" class="slide level2">
-<h2>Isn’t this a data structure, too?</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="isnt-this-a-data-structure-too">Isn’t this a data structure, too?</h2>
 <div class="fragment">
 <div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb11-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>StructOpt<span class="at">)]</span></a>
 <a class="sourceLine" id="cb11-2" title="2"><span class="kw">struct</span> Cli <span class="op">{</span></a>
@@ -404,16 +468,22 @@ add combinators, names very similar to other PLs</li>
 <p>Subcommands = enums.</p>
 </aside>
 </div>
-</section></section>
-<section><section id="generic-type-driven-behavior" class="title-slide slide level1"><h1>Generic, type-driven behavior</h1></section><section id="huh" class="slide level2">
-<h2>Huh?</h2>
+</section>
+<section id="generic-type-driven-behavior" class="slide level1">
+<h1>Generic, type-driven behavior</h1>
+<aside class="notes">
+<p>Okay, after these few example, I think it’s time to look at something a bit different. To make this a crescendo of increasingly complex examples, I gave it a complicated looking headline, too.</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<h2 id="huh">Huh?</h2>
 <p>We write generic functions.</p>
 <p>The concrete types will declare what the user wants</p>
-<aside class="notes">
+</section>
+<section class="slide level1">
 
-</aside>
-</section><section id="read-json-data-from-a-http-request" class="slide level2">
-<h2>Read JSON data from a HTTP request</h2>
+<h2 id="read-json-data-from-a-http-request">Read JSON data from a HTTP request</h2>
 <div class="sourceCode" id="cb12"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">fn</span> handle_login(req: Request) -&gt; Response <span class="op">{</span></a>
 <a class="sourceLine" id="cb12-2" title="2">    <span class="kw">let</span> data: <span class="pp">serde_json::</span>Value =</a>
 <a class="sourceLine" id="cb12-3" title="3">        <span class="pp">serde_json::</span>from_reader(req.body())?;</a>
@@ -427,8 +497,10 @@ add combinators, names very similar to other PLs</li>
 <li>How easy is it to <strong>identify the core concepts</strong>? Okay-ish. There is a data structure in there, and we expect a <code>name</code> to be present.</li>
 </ol>
 </aside>
-</section><section id="extractors" class="slide level2">
-<h2>Extractors</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="extractors">Extractors</h2>
 <div class="sourceCode" id="cb13"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">fn</span> handle_login(data: Json&lt;LoginData&gt;) -&gt; Response <span class="op">{</span></a>
 <a class="sourceLine" id="cb13-2" title="2">    <span class="cn">Ok</span>(<span class="pp">format!</span>(<span class="st">&quot;hello, {}&quot;</span>, data.name))</a>
 <a class="sourceLine" id="cb13-3" title="3"><span class="op">}</span></a></code></pre></div>
@@ -446,8 +518,11 @@ add combinators, names very similar to other PLs</li>
 <li>How easy is it to <strong>identify the core concepts</strong>? easy: signature specifies you want to extract JSON data</li>
 </ol>
 </aside>
-</section></section>
-<section><section id="be-aware-of-your-magic-budget" class="title-slide slide level1"><h1>Be aware of your magic budget</h1></section><section class="slide level2">
+</section>
+<section id="be-aware-of-your-magic-budget" class="slide level1">
+<h1>Be aware of your magic budget</h1>
+</section>
+<section class="slide level1">
 
 <img data-src="images/sudden-clarity.jpg" title="fig:" alt="“Any sufficiently high abstraction is indistinguishable from magic.”" class="stretch" />
 <aside class="notes">
@@ -455,16 +530,20 @@ add combinators, names very similar to other PLs</li>
 <p>cf. <a href="https://www.movellas.com/de/blog/show/201207181556092857/building-worlds-and-the-weirdness-budget">weirdness budget</a> and Steve’s post <a href="https://words.steveklabnik.com/the-language-strangeness-budget">Language Strangeness Budget</a></p>
 <p>Trying to hit the right level of abstraction is hard.</p>
 </aside>
-</section><section id="monads" class="slide level2">
-<h2>Monads</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="monads">Monads</h2>
 <div class="fragment">
 <p>“This is RustFest, Pascal, not Haskell Symposium”</p>
 <aside class="notes">
 <p>I’m kidding, I’m kidding!</p>
 </aside>
 </div>
-</section><section id="what-is-magic" class="slide level2">
-<h2>What is magic?</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="what-is-magic">What is magic?</h2>
 <p>Code whose behavior is hard to predict (or remember)</p>
 <ul>
 <li class="fragment">Unfamiliar macros</li>
@@ -475,8 +554,10 @@ add combinators, names very similar to other PLs</li>
 <p>In general, things that are ‘unusual’ to us can appear as though they are magic</p>
 <p>Have empathy towards your coworkers who might be used to different things than you are</p>
 </aside>
-</section><section id="you-can-turn-that-magic-into-science-using-the-right-tools" class="slide level2">
-<h2>You can turn that magic into science, using the right tools</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="you-can-turn-that-magic-into-science-using-the-right-tools">You can turn that magic into science, using the right tools</h2>
 <p>e.g. using <code>cargo expand</code></p>
 <div class="fragment">
 <p>That often only moves the complexity but doesn’t resolve it</p>
@@ -484,8 +565,10 @@ add combinators, names very similar to other PLs</li>
 <p>people need to learn the tools and remember to use them</p>
 </aside>
 </div>
-</section><section id="how-to-teach-this" class="slide level2">
-<h2>How to teach this?</h2>
+</section>
+<section class="slide level1">
+
+<h2 id="how-to-teach-this">How to teach this?</h2>
 <ul>
 <li class="fragment">Interactive learning: Clippy lints</li>
 <li class="fragment">Write libraries that provide easy to use abstractions</li>
@@ -498,13 +581,17 @@ add combinators, names very similar to other PLs</li>
 <p>There are a lot of opportunities to provide these kinds of abstractions in your own libraries. Offering iterators or builders around data transformation, for example. In general, just making sure the concepts you have in mind or that your users need to have in mind are expressed in the code.</p>
 <p>Last but not least: Give a talk about declarative programming. Which you just listened to! I hope you liked it and I hope you can apply some of this tou your own code bases.</p>
 </aside>
-</section></section>
-<section><section id="thank-you" class="title-slide slide level1"><h1>Thank you!</h1></section><section id="have-a-great-lunch" class="slide level2">
-<h2>Have a great lunch!</h2>
+</section>
+<section id="thank-you" class="slide level1">
+<h1>Thank you!</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="have-a-great-lunch">Have a great lunch!</h2>
 <p>I’m Pascal and I want you to talk to me!</p>
 <p>{<a href="https://twitter.com/killercup">twitter</a>,<a href="https://github.com/killercup">github</a>}.com/killercup</p>
 <p>Slides: <a href="https://git.io/declarative-programming-in-rust">git.io/declarative-programming-in-rust</a></p>
-</section></section>
+</section>
     </div>
   </div>
 

@@ -9,7 +9,7 @@ progress: true
 slideNumber: true
 history: true
 ---
-## Hi, I'm Pascal Hertleif
+# Hi, I'm Pascal Hertleif
 
 - Dev tools team, CLI WG
 - Co-organizer of [Rust Cologne]
@@ -44,6 +44,8 @@ Oh yes, the very beginning.
 
 :::
 
+- - -
+
 ## Simply put,
 
 - you tell a computer what to do,
@@ -70,12 +72,6 @@ being told which streets to take for how many steps
 will surely result in me getting lost somewhere in Rome.
 At least here I can get some great coffee wherever I go.
 
-:::
-
-# Maintainable code
-
-::: notes
-
 Okay, fine, but what does that have to do with declarative programming?
 
 Let's approach this from a different perspective, then.
@@ -84,6 +80,11 @@ Having maintainable code is high in demand,
 but it's hard to get there.
 
 :::
+
+# Maintainable code
+
+- - -
+
 
 ## Is my code maintainable?
 
@@ -108,11 +109,15 @@ Add ones that are specific to your problem domain as needed!
 
 # What is 'Declarative Programming'
 
+- - -
+
 ## What instead of How
 
 Don't write down all the steps how to get somewhere
 
 Try to express what you want to accomplish
+
+- - -
 
 ## How?
 
@@ -128,6 +133,8 @@ Compose your application from smaller pieces
 
 :::
 
+- - -
+
 ## Get to the point
 
 ::: notes
@@ -141,6 +148,8 @@ The idea is to introduce abstractions, at the right levels.
 If done right, we'll end up with code that easier to reason about.
 
 :::
+
+- - -
 
 ## Declarative code in Rust
 
@@ -157,6 +166,8 @@ is immensely powerful.
 There's no need to rewrite your high level code when need to get high performance.
 
 :::
+
+- - -
 
 ## By example
 
@@ -179,6 +190,8 @@ in practically every code base ever,
 so it'll be the first example.
 
 :::
+
+- - -
 
 ## Find the first element that ends with "m"
 
@@ -209,6 +222,8 @@ Since we're in Italy I thought I'd go with latin instead of "foobar".
 
 :::
 
+- - -
+
 ## New requirements! Find up to 5 elements that end with "m"
 
 ```rust
@@ -237,6 +252,8 @@ result
 
 DONT SAY: We totally forgot about short circuiting after we've found 5 elements!
 :::
+
+- - -
 
 ## Iterators
 
@@ -280,6 +297,8 @@ not the type we're collecting into!
 
 :::
 
+- - -
+
 ## Another iterator example
 
 Is there an item that starts with "l"?
@@ -289,6 +308,8 @@ let answer = xs.iter()
     .any(|item| item.starts_with('l'));
 ```
 
+- - -
+
 # Parse JSON
 
 ::: notes
@@ -297,6 +318,8 @@ The next example is about parsing data.
 Here, from a string of JSON, into something we can use in out code.
 
 :::
+
+- - -
 
 ## First try
 
@@ -371,6 +394,8 @@ This looks very generic and not specific to our _actual_ problem.
 
 :::
 
+- - -
+
 ## Derive it.
 
 ```rust
@@ -397,6 +422,8 @@ It doesn't allocate a `Value` and it has better errors, too!
 
 :::
 
+- - -
+
 # Command Line Arguments
 
 ::: notes
@@ -405,6 +432,8 @@ Did I mention I spent a lot of time thinking about CLI apps this year?
 So I obviously had to include an example from that area, too.
 
 :::
+
+- - -
 
 ## Plain old `std`
 
@@ -431,6 +460,8 @@ So we read the first two entries in the global `args`.
 Hm. Can we make it use flags instead of positional arguments?
 
 :::
+
+- - -
 
 ## New requirements: `tool -o Output.file Input.file`
 
@@ -463,6 +494,8 @@ I wonder if there is way to abstract over it?
     argument types have names, but parsing their content is up to you
 
 :::
+
+- - -
 
 ## Clap
 
@@ -497,6 +530,8 @@ Weird.
 
 :::
 
+- - -
+
 ## Isn't this a data structure, too?
 
 . . .
@@ -527,6 +562,8 @@ Subcommands = enums.
 
 :::
 
+- - -
+
 # Generic, type-driven behavior
 
 ::: notes
@@ -538,17 +575,15 @@ I gave it a complicated looking headline, too.
 
 :::
 
+- - -
+
 ## Huh?
 
 We write generic functions.
 
 The concrete types will declare what the user wants
 
-::: notes
-
-
-
-:::
+- - -
 
 ## Read JSON data from a HTTP request
 
@@ -571,6 +606,8 @@ fn handle_login(req: Request) -> Response {
     Okay-ish. There is a data structure in there, and we expect a `name` to be present.
 
 :::
+
+- - -
 
 ## Extractors
 
@@ -599,6 +636,8 @@ How does this work?
 
 :::
 
+- - -
+
 # Be aware of your magic budget
 
 - - -
@@ -616,6 +655,8 @@ Trying to hit the right level of abstraction is hard.
 
 :::
 
+- - -
+
 ## Monads
 
 . . .
@@ -627,6 +668,8 @@ Trying to hit the right level of abstraction is hard.
 I'm kidding, I'm kidding!
 
 :::
+
+- - -
 
 ## What is magic?
 
@@ -644,6 +687,8 @@ Have empathy towards your coworkers who might be used to different things than y
 
 :::
 
+- - -
+
 ## You can turn that magic into science, using the right tools
 
 e.g. using `cargo expand`
@@ -657,6 +702,8 @@ That often only moves the complexity but doesn't resolve it
 people need to learn the tools and remember to use them
 
 :::
+
+- - -
 
 ## How to teach this?
 
@@ -698,6 +745,8 @@ I hope you liked it
 and I hope you can apply some of this tou your own code bases.
 
 :::
+
+- - -
 
 # Thank you!
 

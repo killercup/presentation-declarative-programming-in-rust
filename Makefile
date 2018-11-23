@@ -10,7 +10,7 @@ slides:
 	--template template/index.html \
 	-V theme=pascal-light \
 	-V revealjs-url=template \
-	--standalone --slide-level 2 \
+	--standalone --slide-level 1 \
 	# --self-contained
 
 pdf: slides
@@ -23,7 +23,7 @@ beamer:
 	cp -R $(IMAGES_FOLDER) $(OUTPUT_FOLDER); \
 	cd $(INPUT_FOLDER); \
 	pandoc $(INPUT).md \
-	--base-header-level=2 \
+	--base-header-level=1 \
 	--table-of-contents \
 	$(FILTER_OPTIONS) \
 	--default-image-extension=pdf \
