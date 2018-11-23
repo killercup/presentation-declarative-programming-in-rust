@@ -424,8 +424,7 @@ let output = args.next()
 ::: notes
 
 Simple enough: We want our tool to read two CLI args.
-
-Hm. Can we make it use flags instead of positional arguments?
+So we read the first two entries in the global `args`.
 
 1. How much do I need to **read**?
     lots
@@ -434,9 +433,11 @@ Hm. Can we make it use flags instead of positional arguments?
 3. How easy is it to **identify the core concepts**?
     easy: argument positions
 
+Hm. Can we make it use flags instead of positional arguments?
+
 :::
 
-## getopts
+## New requirements: `tool -o Output.file Input.file`
 
 ```rust
 let mut opts = Options::new();
@@ -502,6 +503,8 @@ Weird.
 :::
 
 ## Isn't this a data structure, too?
+
+. . .
 
 ```rust
 #[derive(StructOpt)]
@@ -601,7 +604,7 @@ How does this work?
 
 :::
 
-# Magic budget
+# Be aware of your magic budget
 
 - - -
 
@@ -634,7 +637,7 @@ I'm kidding, I'm kidding!
 
 Code whose behavior is hard to predict (or remember)
 
-> - Macros you don't understand yet
+> - Unfamiliar macros
 > - Very generic code
 > - But also: Very concise and 'clever' code
 
@@ -667,7 +670,41 @@ people need to learn the tools and remember to use them
 > - Give an introductory talk on it (👋)
 
 
-# Thanks!
+::: notes
+
+This is a topic that I've been thinking about a lot over the last few years.
+Especially after seeing approaches from functional programming
+becoming more mainstream.
+
+So I asked myself:
+If a lot of the advantages of declarative programming only come into tuition
+when you can recognize the patterns,
+how can I show them to more people?
+
+Clippy is a set of additional lints for your Rust code.
+If you like Rust's error messages, you'll love Clippy.
+Some time ago I opened an issue there to suggest
+replacing simple `for` loops with iterators;
+e.g. for the cases we've seen earlier.
+Telling people about this after they've just written their code
+sounds like a good opportunity to teach them an alternative style.
+
+There are a lot of opportunities to provide these kinds of abstractions
+in your own libraries.
+Offering iterators or builders around data transformation, for example.
+In general, just making sure the concepts you have in mind
+or that your users need to have in mind
+are expressed in the code.
+
+Last but not least:
+Give a talk about declarative programming.
+Which you just listened to!
+I hope you liked it
+and I hope you can apply some of this tou your own code bases.
+
+:::
+
+# Thank you!
 
 - - -
 

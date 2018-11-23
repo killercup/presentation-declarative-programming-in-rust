@@ -331,16 +331,16 @@ add combinators, names very similar to other PLs</li>
 <a class="sourceLine" id="cb8-4" title="4"><span class="kw">let</span> output = args.next()</a>
 <a class="sourceLine" id="cb8-5" title="5">    .expect(<span class="st">&quot;USAGE: tool &lt;input&gt; &lt;output&gt;&quot;</span>);</a></code></pre></div>
 <aside class="notes">
-<p>Simple enough: We want our tool to read two CLI args.</p>
-<p>Hm. Can we make it use flags instead of positional arguments?</p>
+<p>Simple enough: We want our tool to read two CLI args. So we read the first two entries in the global <code>args</code>.</p>
 <ol type="1">
 <li>How much do I need to <strong>read</strong>? lots</li>
 <li>How much do I need to <strong>write</strong> to make a change? depends on what you need: a parser maybe?</li>
 <li>How easy is it to <strong>identify the core concepts</strong>? easy: argument positions</li>
 </ol>
+<p>Hm. Can we make it use flags instead of positional arguments?</p>
 </aside>
-</section><section id="getopts" class="slide level2">
-<h2>getopts</h2>
+</section><section id="new-requirements-tool--o-output.file-input.file" class="slide level2">
+<h2>New requirements: <code>tool -o Output.file Input.file</code></h2>
 <div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">let</span> <span class="kw">mut</span> opts = <span class="pp">Options::</span>new();</a>
 <a class="sourceLine" id="cb9-2" title="2">opts.optopt(<span class="st">&quot;o&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;set output file name&quot;</span>, <span class="st">&quot;NAME&quot;</span>);</a>
 <a class="sourceLine" id="cb9-3" title="3"><span class="kw">let</span> matches = <span class="kw">match</span> opts.parse(&amp;args<span class="op">[</span><span class="dv">1</span>..<span class="op">]</span>) <span class="op">{</span></a>
@@ -387,6 +387,7 @@ add combinators, names very similar to other PLs</li>
 </aside>
 </section><section id="isnt-this-a-data-structure-too" class="slide level2">
 <h2>Isn’t this a data structure, too?</h2>
+<div class="fragment">
 <div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb11-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>StructOpt<span class="at">)]</span></a>
 <a class="sourceLine" id="cb11-2" title="2"><span class="kw">struct</span> Cli <span class="op">{</span></a>
 <a class="sourceLine" id="cb11-3" title="3">    <span class="co">/// Sets the input file to use</span></a>
@@ -404,6 +405,7 @@ add combinators, names very similar to other PLs</li>
 </ol>
 <p>Subcommands = enums.</p>
 </aside>
+</div>
 </section></section>
 <section><section id="generic-type-driven-behavior" class="title-slide slide level1"><h1>Generic, type-driven behavior</h1></section><section id="huh" class="slide level2">
 <h2>Huh?</h2>
@@ -447,7 +449,7 @@ add combinators, names very similar to other PLs</li>
 </ol>
 </aside>
 </section></section>
-<section><section id="magic-budget" class="title-slide slide level1"><h1>Magic budget</h1></section><section class="slide level2">
+<section><section id="be-aware-of-your-magic-budget" class="title-slide slide level1"><h1>Be aware of your magic budget</h1></section><section class="slide level2">
 
 <p><img data-src="TODO.jpg" title="Any sufficiently high abstraction is indistinguishable from magic." /></p>
 <aside class="notes">
@@ -467,7 +469,7 @@ add combinators, names very similar to other PLs</li>
 <h2>What is magic?</h2>
 <p>Code whose behavior is hard to predict (or remember)</p>
 <ul>
-<li class="fragment">Macros you don’t understand yet</li>
+<li class="fragment">Unfamiliar macros</li>
 <li class="fragment">Very generic code</li>
 <li class="fragment">But also: Very concise and ‘clever’ code</li>
 </ul>
@@ -491,8 +493,15 @@ add combinators, names very similar to other PLs</li>
 <li class="fragment">Write libraries that provide easy to use abstractions</li>
 <li class="fragment">Give an introductory talk on it (👋)</li>
 </ul>
+<aside class="notes">
+<p>This is a topic that I’ve been thinking about a lot over the last few years. Especially after seeing approaches from functional programming becoming more mainstream.</p>
+<p>So I asked myself: If a lot of the advantages of declarative programming only come into tuition when you can recognize the patterns, how can I show them to more people?</p>
+<p>Clippy is a set of additional lints for your Rust code. If you like Rust’s error messages, you’ll love Clippy. Some time ago I opened an issue there to suggest replacing simple <code>for</code> loops with iterators; e.g. for the cases we’ve seen earlier. Telling people about this after they’ve just written their code sounds like a good opportunity to teach them an alternative style.</p>
+<p>There are a lot of opportunities to provide these kinds of abstractions in your own libraries. Offering iterators or builders around data transformation, for example. In general, just making sure the concepts you have in mind or that your users need to have in mind are expressed in the code.</p>
+<p>Last but not least: Give a talk about declarative programming. Which you just listened to! I hope you liked it and I hope you can apply some of this tou your own code bases.</p>
+</aside>
 </section></section>
-<section><section id="thanks" class="title-slide slide level1"><h1>Thanks!</h1></section><section id="have-a-great-lunch" class="slide level2">
+<section><section id="thank-you" class="title-slide slide level1"><h1>Thank you!</h1></section><section id="have-a-great-lunch" class="slide level2">
 <h2>Have a great lunch!</h2>
 <p>I’m Pascal and I want you to talk to me!</p>
 <p>{<a href="https://twitter.com/killercup">twitter</a>,<a href="https://github.com/killercup">github</a>}.com/killercup</p>
