@@ -161,10 +161,6 @@ There's no need to rewrite your high level code when need to get high performanc
 
 ## By example
 
-Rust differentiates data from behavior.
-
-Let's look at the intersection: Data transformation
-
 ::: notes
 
 This is a short talk, and I have spoken for a few minutes already.
