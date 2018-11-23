@@ -12,7 +12,7 @@ history: true
 ---
 ## Hi, I'm Pascal Hertleif
 
-- Web dev & Rust
+- Dev tools team, CLI WG
 - Co-organizer of [Rust Cologne]
 - {[twitter],[github]}.com/killercup
 - Rust-centric blog: [deterministic.space]
@@ -24,12 +24,26 @@ history: true
 
 ::: notes
 
-- I've been working with Rust since early 2014
-- I have stickers!
+I've been working with Rust since early 2014,
+and I've been loving every minute of it.
+
+Right now, I'm leading the CLI working group.
+Our goal is to make writing command line applications in Rust _amazing_!
+If that sounds interesting, in the very next talk after lunch,
+Katharina will tell you what we've been up to.
+
+Okay.
+Let's start at the beginning.
 
 :::
 
 # What is a computer program?
+
+::: notes
+
+Oh yes, the very beginning.
+
+:::
 
 ## Simply put,
 
@@ -47,12 +61,14 @@ history: true
 
 ::: notes
 
-Let’s just say you need abstractions to not completely get lost
+Let’s just say you need abstractions to not get lost completely
 
 same as in real life
 
-When I ask you for directions, “take the bus to foobar station” is something I can work with;
-being told which streets to take for how many steps will surely result in me getting lost somewhere in Rome.
+When I ask you for directions,
+“take bus line 5 to foobar station” is something I can probably work with;
+being told which streets to take for how many steps
+will surely result in me getting lost somewhere in Rome.
 At least here I can get some great coffee wherever I go.
 
 :::
@@ -61,7 +77,7 @@ At least here I can get some great coffee wherever I go.
 
 ::: notes
 
-Okay, fine, that wasn't helpful
+Okay, fine, but what does that have to do with declarative programming?
 
 Let's approach this from a different perspective, then.
 
@@ -76,15 +92,15 @@ but it's hard to get there.
 
 1. How much do I need to **read** to understand what’s going on?
 2. How much do I need to **write** to make a change?
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
 
 :::
 
 ::: notes
 
-Here are a number of somewhat arbitrary questions to benchmark your code base
+Here are a number of somewhat arbitrary questions that you can ask about a code base
 
-We'll use them later one on some examples
+We'll use them later on to evaluate some examples
 
 Since this is a very broad topic, the questions are very generic.
 Add ones that are specific to your problem domain as needed!
@@ -101,9 +117,11 @@ Try to express what you want to accomplish
 
 ## How?
 
-Name concepts and group behavior
+Identify concepts and extract their behavior
 
-Reduce control flow
+Abstract over control flow
+
+Compose your application from smaller pieces
 
 ::: notes
 
@@ -113,7 +131,33 @@ Reduce control flow
 
 ## Get to the point
 
-# Declarative code in Rust
+::: notes
+
+This is very abstract, I know.
+
+But that's also kind of the point:
+
+The idea is to introduce abstractions, at the right levels.
+
+If done right, we'll end up with code that easier to reason about.
+
+:::
+
+## Declarative code in Rust
+
+::: notes
+
+What does that mean for Rust?
+Being able to _abstract_ is one of the main features of Rust.
+
+One of its selling points is "zero-cost abstractions".
+The "zero-cost-ness" is about runtime performance, however.
+Being able to introduce abstractions
+without having to worry about ending up with slow code
+is immensely powerful.
+There's no need to rewrite your high level code when need to get high performance.
+
+:::
 
 ## By example
 
@@ -121,7 +165,25 @@ Rust differentiates data from behavior.
 
 Let's look at the intersection: Data transformation
 
+::: notes
+
+This is a short talk, and I have spoken for a few minutes already.
+I can't give you a recipe for instantly writing amazingly declarative code,
+but I can show you some example.
+
+I hope they inspire you.
+
+:::
+
 # Loops
+
+::: notes
+
+Working with collections like arrays and maps is I do
+in practically every code base ever,
+so it'll be the first example.
+
+:::
 
 ## Find the first element that ends with "m"
 
@@ -146,7 +208,7 @@ Since we're in Italy I thought I'd go with latin instead of "foobar".
 2. How much do I need to **write** to make a change?
 
     depdends
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
 
     `for` `if` `return` <- a lot of control flow!
 
@@ -174,7 +236,7 @@ result
 3. How much do I need to **write** to make a change?
 
     depends on the change: maybe a lot
-4. How easy is it to **identifying the core concepts**?
+4. How easy is it to **identify the core concepts**?
 
     find elements up to a limit?
 
@@ -193,13 +255,19 @@ xs.iter()
 
 ::: notes
 
+Look at this.
+It does the exact same thing as the code before,
+but gives names to the concepts we've just talked about.
+This might be harder to read if you're not used to it,
+but it gets better once you've seen this style a few times.
+
 1. How much do I need to **read** to understand what’s going on?
 
     4 lines
 2. How much do I need to **write** to make a change?
 
     add combinators, names very similar to other PLs
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
 
     The method names are the concepts used!
 
@@ -211,9 +279,29 @@ So we have not only abstracted over the manual iteration
 but by declaring our intent to only want 5 elements
 our abstraction was able to do the early return for us, too.
 
+Also note:
+This is not specific to the collection type we are iterating over,
+not the type we're collecting into!
+
 :::
 
+## Another iterator example
+
+Is there an item that starts with "l"?
+
+```rust
+let answer = xs.iter()
+    .any(|item| item.starts_with('l'));
+```
+
 # Parse JSON
+
+::: notes
+
+The next example is about parsing data.
+Here, from a string of JSON, into something we can use in out code.
+
+:::
 
 ## First try
 
@@ -234,7 +322,7 @@ Simple enough; it's a trivial example after all.
     Four lines: understanding `v["a"].as_u64()`
 2. How much do I need to **write** to make a change?
     Now it gets interesting: It depends!
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
     Too little code to tell what the core concept is really.
 
 :::
@@ -283,7 +371,7 @@ This looks very generic and not specific to our _actual_ problem.
     Lots
 2. How much do I need to **write** to make a change?
     Lots
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
     `if let Some()` whatever
 
 :::
@@ -309,12 +397,19 @@ It doesn't allocate a `Value` and it has better errors, too!
     just the struct really
 2. How much do I need to **write** to make a change?
     add to the struct; maybe attributes
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
     yes: deserialization!
 
 :::
 
 # Command Line Arguments
+
+::: notes
+
+Did I mention I spent a lot of time thinking about CLI apps this year?
+So I obviously had to include an example from that area, too.
+
+:::
 
 ## Plain old `std`
 
@@ -336,7 +431,7 @@ Hm. Can we make it use flags instead of positional arguments?
     lots
 2. How much do I need to **write** to make a change?
     depends on what you need: a parser maybe?
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
     easy: argument positions
 
 :::
@@ -368,7 +463,7 @@ I wonder if there is way to abstract over it?
     lots
 2. How much do I need to **write** to make a change?
     not so much
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
     argument types have names, but parsing their content is up to you
 
 :::
@@ -401,14 +496,12 @@ Weird.
     glance over it
 2. How much do I need to **write** to make a change?
     little
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
     easy! but parsing their content is up to you
 
 :::
 
 ## Isn't this a data structure, too?
-
-## Derive it.
 
 ```rust
 #[derive(StructOpt)]
@@ -429,7 +522,7 @@ Woah. This is super concise.
     glance at the struct
 2. How much do I need to **write** to make a change?
     add a field, maybe attributes
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
     super easy: the type conversions – incl. Option and Vec – are front and center
 
 Subcommands = enums.
@@ -438,13 +531,23 @@ Subcommands = enums.
 
 # Generic, type-driven behavior
 
+::: notes
+
+Okay, after these few example,
+I think it's time to look at something a bit different.
+To make this a crescendo of increasingly complex examples,
+I gave it a complicated looking headline, too.
+
+:::
+
 ## Huh?
 
-We write generic functions
+We write generic functions.
 
-and the concrete types will declare what the user wants
+The concrete types will declare what the user wants
 
 ::: notes
+
 
 
 :::
@@ -466,7 +569,7 @@ fn handle_login(req: Request) -> Response {
     Here: 3 lines
 2. How much do I need to **write** to make a change?
     Depends: Three lines at minimum it seems
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
     Okay-ish. There is a data structure in there, and we expect a `name` to be present.
 
 :::
@@ -493,7 +596,7 @@ How does this work?
     Function signature
 2. How much do I need to **write** to make a change?
     data type, function signature
-3. How easy is it to **identifying the core concepts**?
+3. How easy is it to **identify the core concepts**?
     easy: signature specifies you want to extract JSON data
 
 :::
@@ -510,6 +613,8 @@ Beware of a project's "Magic budget"
 
 cf. [weirdness budget](https://www.movellas.com/de/blog/show/201207181556092857/building-worlds-and-the-weirdness-budget)
 and Steve's post [Language Strangeness Budget](https://words.steveklabnik.com/the-language-strangeness-budget)
+
+Trying to hit the right level of abstraction is hard.
 
 :::
 
@@ -554,6 +659,12 @@ That often only moves the complexity but doesn't resolve it
 people need to learn the tools and remember to use them
 
 :::
+
+## How to teach this?
+
+> - Interactive learning: Clippy lints
+> - Write libraries that provide easy to use abstractions
+> - Give an introductory talk on it (👋)
 
 
 # Thanks!
