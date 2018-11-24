@@ -105,10 +105,13 @@ but it's hard to get there.
 
 ::: notes
 
-Here are a number of somewhat arbitrary questions that you can ask about a code base
+Here are a number of somewhat arbitrary questions that you can ask about a code base.
 
-Since this is a very broad topic, the questions are very generic.
-Add ones that are specific to your problem domain as needed!
+The main idea is this:
+Make your code easier to reason about.
+
+Since this is a very broad topic, these questions are very generic.
+Add ones that are specific to your problem domain as needed.
 
 :::
 
@@ -169,7 +172,7 @@ But that's also kind of the point:
 
 The idea is to introduce abstractions, at the right levels.
 
-If done right, we'll end up with code that easier to reason about.
+If done right, we'll end up with code that is easier to reason about.
 
 :::
 
