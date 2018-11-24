@@ -122,7 +122,7 @@
 </section>
 <section class="slide level1">
 
-<h2 id="simply-put">Simply put,</h2>
+<h2 id="to-make-a-program-work">To make a program work,</h2>
 <ul>
 <li>you tell a computer what to do,</li>
 <li>in tiny steps, specific instructions.</li>
@@ -133,9 +133,7 @@
 <li>Hard to reason about the general behavior of a program</li>
 </ul>
 </div>
-</section>
-<section class="slide level1">
-
+<div class="fragment">
 <p>“This is RustFest, Pascal, not AssemblyCamp”</p>
 <aside class="notes">
 <p>Let’s just say you need abstractions to not get lost completely</p>
@@ -143,11 +141,15 @@
 <p>When I ask you for directions, “take bus line 5 to foobar station” is something I can probably work with; being told which streets to take for how many steps will surely result in me getting lost somewhere in Rome. At least here I can get some great coffee wherever I go.</p>
 <p>Okay, fine, but what does that have to do with declarative programming?</p>
 <p>Let’s approach this from a different perspective, then.</p>
+</aside>
+</div>
+</section>
+<section class="slide level1">
+
+<h2 id="maintainable-code">Maintainable code</h2>
+<aside class="notes">
 <p>Having maintainable code is high in demand, but it’s hard to get there.</p>
 </aside>
-</section>
-<section id="maintainable-code" class="slide level1">
-<h1>Maintainable code</h1>
 </section>
 <section class="slide level1">
 
@@ -161,28 +163,43 @@
 </div>
 <aside class="notes">
 <p>Here are a number of somewhat arbitrary questions that you can ask about a code base</p>
-<p>We’ll use them later on to evaluate some examples</p>
 <p>Since this is a very broad topic, the questions are very generic. Add ones that are specific to your problem domain as needed!</p>
 </aside>
 </section>
 <section id="what-is-declarative-programming" class="slide level1">
 <h1>What is ‘Declarative Programming’</h1>
+<div class="fragment">
+<blockquote>
+<p>Declarative programming is often defined as any style of programming that is not imperative.</p>
+<p>– <a href="https://en.wikipedia.org/w/index.php?title=Declarative_programming&amp;oldid=846955022">Wikipedia</a></p>
+</blockquote>
+<aside class="notes">
+<p>Let’s see what Wikipedia has to say about that.</p>
+<p>Ah, hm. Not that helpful.</p>
+<p>Actually: We could start a discussion around “what <em>true</em> declarative programming” is, how it differs from “functional programming”, and all that.</p>
+<p>Rust is, to me, quite pragmatic: It has functional elements, and indeed allows you to write code that I’d call declarative, but also embraces mutability and let’s you write in a quite procedural style as well.</p>
+</aside>
+</div>
 </section>
 <section class="slide level1">
 
 <h2 id="what-instead-of-how">What instead of How</h2>
-<p>Don’t write down all the steps how to get somewhere</p>
-<p>Try to express what you want to accomplish</p>
-</section>
-<section class="slide level1">
-
-<h2 id="how">How?</h2>
-<p>Identify concepts and extract their behavior</p>
-<p>Abstract over control flow</p>
-<p>Compose your application from smaller pieces</p>
-<aside class="notes">
-<p>‘Declarative Programming’ ≠ ‘Functional Programming’</p>
-</aside>
+<div class="fragment">
+<ul>
+<li>Don’t write down all the steps how to get somewhere</li>
+<li>Express what you want to accomplish</li>
+</ul>
+</div>
+<div class="fragment">
+<p>How?</p>
+</div>
+<div class="fragment">
+<ul>
+<li>Identify concepts and extract their behavior</li>
+<li>Abstract over control flow</li>
+<li>Compose your application from smaller pieces</li>
+</ul>
+</div>
 </section>
 <section class="slide level1">
 
@@ -220,45 +237,34 @@
 
 <h2 id="find-the-first-element-that-ends-with-m">Find the first element that ends with “m”</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">let</span> xs = <span class="pp">vec!</span><span class="op">[</span><span class="st">&quot;lorem&quot;</span>, <span class="st">&quot;ipsum&quot;</span>, <span class="st">&quot;dolor&quot;</span><span class="op">]</span>;</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">for</span> x <span class="kw">in</span> &amp;xs <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-3" title="3">  <span class="kw">if</span> x.ends_with(<span class="ch">&#39;m&#39;</span>) <span class="op">{</span></a>
-<a class="sourceLine" id="cb1-4" title="4">    <span class="kw">return</span> <span class="cn">Some</span>(x);</a>
-<a class="sourceLine" id="cb1-5" title="5">  <span class="op">}</span></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="op">}</span></a>
-<a class="sourceLine" id="cb1-7" title="7"></a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="cn">None</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">for</span> i <span class="kw">in</span> <span class="dv">0</span>..xs.len() <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="kw">if</span> xs<span class="op">[</span>i<span class="op">]</span>.ends_with(<span class="ch">&#39;m&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="kw">return</span> <span class="cn">Some</span>(xs<span class="op">[</span>i<span class="op">]</span>);</a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="op">}</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="kw">return</span> <span class="cn">None</span>;</a></code></pre></div>
 <aside class="notes">
 <p>Since we’re in Italy I thought I’d go with latin instead of “foobar”.</p>
-<ol type="1">
-<li><p>How much do I need to <strong>read</strong> to understand what’s going on?</p>
-trivial</li>
-<li><p>How much do I need to <strong>write</strong> to make a change?</p>
-depdends</li>
-<li><p>How easy is it to <strong>identify the core concepts</strong>?</p>
-<p><code>for</code> <code>if</code> <code>return</code> &lt;- a lot of control flow!</p></li>
-</ol>
+<p>This is simple enough, imperative code.</p>
 </aside>
 </section>
 <section class="slide level1">
 
 <h2 id="new-requirements-find-up-to-5-elements-that-end-with-m">New requirements! Find up to 5 elements that end with “m”</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">let</span> xs = <span class="pp">vec!</span><span class="op">[</span><span class="st">&quot;lorem&quot;</span>, <span class="st">&quot;ipsum&quot;</span>, <span class="st">&quot;dolor&quot;</span><span class="op">]</span>;</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw">let</span> <span class="kw">mut</span> result = <span class="dt">Vec</span>::new();</a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="kw">for</span> x <span class="kw">in</span> &amp;xs <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-4" title="4">  <span class="kw">if</span> result.len() &lt;= <span class="dv">5</span> &amp;&amp; x.ends_with(<span class="ch">&#39;m&#39;</span>) <span class="op">{</span></a>
-<a class="sourceLine" id="cb2-5" title="5">    result.push(x);</a>
-<a class="sourceLine" id="cb2-6" title="6">  <span class="op">}</span></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="op">}</span></a>
-<a class="sourceLine" id="cb2-8" title="8">result</a></code></pre></div>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">let</span> <span class="kw">mut</span> result = <span class="dt">Vec</span>::new();</a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">for</span> i <span class="kw">in</span> <span class="dv">0</span>..xs.len() <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="kw">if</span> result.len() &lt;= <span class="dv">5</span> &amp;&amp; xs<span class="op">[</span>i<span class="op">]</span>.ends_with(<span class="ch">&#39;m&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    result.push(xs<span class="op">[</span>i<span class="op">]</span>);</a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="op">}</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="kw">return</span> result;</a></code></pre></div>
 <aside class="notes">
-<ol type="1">
-<li><p>How much do I need to <strong>read</strong> to understand what’s going on?</p>
-It’s okay if you’re used to reading this code of code? nuances in the details: find that <code>5</code>, parse <code>&lt;=</code> correctly</li>
-<li><p>How much do I need to <strong>write</strong> to make a change?</p>
-depends on the change: maybe a lot</li>
-<li><p>How easy is it to <strong>identify the core concepts</strong>?</p>
-<p>find elements up to a limit?</p></li>
-</ol>
+<p>It’s okay if you’re used to reading this code of code?</p>
+<p>Nuances in the details: find that <code>5</code>, parse <code>&lt;=</code> correctly</p>
+<p>And the font I use even uses ligatures make that “less than or equal” look pretty!</p>
 <p>DONT SAY: We totally forgot about short circuiting after we’ve found 5 elements!</p>
 </aside>
 </section>
@@ -272,15 +278,8 @@ depends on the change: maybe a lot</li>
 <a class="sourceLine" id="cb3-5" title="5">  .collect()</a></code></pre></div>
 <aside class="notes">
 <p>Look at this. It does the exact same thing as the code before, but gives names to the concepts we’ve just talked about. This might be harder to read if you’re not used to it, but it gets better once you’ve seen this style a few times.</p>
-<ol type="1">
-<li><p>How much do I need to <strong>read</strong> to understand what’s going on?</p>
-4 lines</li>
-<li><p>How much do I need to <strong>write</strong> to make a change?</p>
-add combinators, names very similar to other PLs</li>
-<li><p>How easy is it to <strong>identify the core concepts</strong>?</p>
-<p>The method names are the concepts used!</p></li>
-</ol>
-<p>And this is even faster than the loop we’ve just written: Iterators are lazy. This will stop after the 5th matched element, but in our loop we forgot to write the early return!</p>
+<p>The method names are the concepts used!</p>
+<p>And this is faster than the loop we’ve just written: Iterators are lazy. This will stop after the 5th matched element, but in our loop we forgot to write the early return!</p>
 <p>So we have not only abstracted over the manual iteration but by declaring our intent to only want 5 elements our abstraction was able to do the early return for us, too.</p>
 <p>Also note: This is not specific to the collection type we are iterating over, not the type we’re collecting into!</p>
 </aside>
@@ -294,8 +293,9 @@ add combinators, names very similar to other PLs</li>
 </section>
 <section id="parse-json" class="slide level1">
 <h1>Parse JSON</h1>
+<p><code>{&quot;a&quot;: 4}</code></p>
 <aside class="notes">
-<p>The next example is about parsing data. Here, from a string of JSON, into something we can use in out code.</p>
+<p>The next example is about parsing data. Here, from a string of JSON, into something we can use in our code.</p>
 </aside>
 </section>
 <section class="slide level1">
@@ -309,67 +309,57 @@ add combinators, names very similar to other PLs</li>
 <a class="sourceLine" id="cb5-6" title="6"><span class="op">}</span></a></code></pre></div>
 <aside class="notes">
 <p>Simple enough; it’s a trivial example after all.</p>
-<ol type="1">
-<li>How much do I need to <strong>read</strong>? Four lines: understanding <code>v[&quot;a&quot;].as_u64()</code></li>
-<li>How much do I need to <strong>write</strong> to make a change? Now it gets interesting: It depends!</li>
-<li>How easy is it to <strong>identify the core concepts</strong>? Too little code to tell what the core concept is really.</li>
-</ol>
 </aside>
 </section>
 <section class="slide level1">
 
-<h2 id="new-requirements-this-structure-now-has-three-fields">New requirements! This structure now has three fields</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">struct</span> Response <span class="op">{</span> a: <span class="dt">u64</span>, b: <span class="dt">u64</span>, c: <span class="dt">u64</span> <span class="op">}</span></a>
-<a class="sourceLine" id="cb6-2" title="2"></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="kw">let</span> v: <span class="pp">serde_json::</span>Value =</a>
-<a class="sourceLine" id="cb6-4" title="4">    <span class="pp">serde_json::</span>from_str(<span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">a</span><span class="sc">\&quot;</span><span class="st">: 4, </span><span class="sc">\&quot;</span><span class="st">b</span><span class="sc">\&quot;</span><span class="st">: 8, </span><span class="sc">\&quot;</span><span class="st">c</span><span class="sc">\&quot;</span><span class="st">: 15}&quot;</span>)?;</a>
-<a class="sourceLine" id="cb6-5" title="5"></a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="kw">let</span> a = <span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(value) = v<span class="op">[</span><span class="st">&quot;a&quot;</span><span class="op">]</span>.as_u64() <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-7" title="7">    value</a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-9" title="9">    <span class="kw">return</span> <span class="cn">Err</span>(<span class="st">&quot;invalid&quot;</span>.into())</a>
-<a class="sourceLine" id="cb6-10" title="10"><span class="op">}</span>;</a>
-<a class="sourceLine" id="cb6-11" title="11"></a>
-<a class="sourceLine" id="cb6-12" title="12"><span class="kw">let</span> b = <span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(value) = v<span class="op">[</span><span class="st">&quot;b&quot;</span><span class="op">]</span>.as_u64() <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-13" title="13">    value</a>
-<a class="sourceLine" id="cb6-14" title="14"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-15" title="15">    <span class="kw">return</span> <span class="cn">Err</span>(<span class="st">&quot;invalid&quot;</span>.into())</a>
-<a class="sourceLine" id="cb6-16" title="16"><span class="op">}</span>;</a>
-<a class="sourceLine" id="cb6-17" title="17"></a>
-<a class="sourceLine" id="cb6-18" title="18"><span class="kw">let</span> c = <span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(value) = v<span class="op">[</span><span class="st">&quot;c&quot;</span><span class="op">]</span>.as_u64() <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-19" title="19">    value</a>
-<a class="sourceLine" id="cb6-20" title="20"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb6-21" title="21">    <span class="kw">return</span> <span class="cn">Err</span>(<span class="st">&quot;invalid&quot;</span>.into())</a>
-<a class="sourceLine" id="cb6-22" title="22"><span class="op">}</span>;</a>
-<a class="sourceLine" id="cb6-23" title="23"></a>
-<a class="sourceLine" id="cb6-24" title="24"><span class="kw">let</span> res = Response <span class="op">{</span> a, b, c <span class="op">}</span>;</a></code></pre></div>
+<h2 id="new-requirements">New requirements!</h2>
+<p>This structure now has three fields</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">let</span> v: <span class="pp">serde_json::</span>Value = <span class="pp">serde_json::</span>from_str(</a>
+<a class="sourceLine" id="cb6-2" title="2">    <span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">a</span><span class="sc">\&quot;</span><span class="st">: 4, </span><span class="sc">\&quot;</span><span class="st">b</span><span class="sc">\&quot;</span><span class="st">: 8, </span><span class="sc">\&quot;</span><span class="st">c</span><span class="sc">\&quot;</span><span class="st">: 15}&quot;</span></a>
+<a class="sourceLine" id="cb6-3" title="3">)?;</a>
+<a class="sourceLine" id="cb6-4" title="4"></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="kw">struct</span> Response <span class="op">{</span> a: <span class="dt">u64</span>, b: <span class="dt">u64</span>, c: <span class="dt">u64</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb6-6" title="6"></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="kw">let</span> a = <span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(value) = v<span class="op">[</span><span class="st">&quot;a&quot;</span><span class="op">]</span>.as_u64() <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-8" title="8">    value</a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-10" title="10">    <span class="kw">return</span> <span class="cn">Err</span>(<span class="st">&quot;invalid&quot;</span>.into())</a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="op">}</span>;</a>
+<a class="sourceLine" id="cb6-12" title="12"></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="kw">let</span> b = <span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(value) = v<span class="op">[</span><span class="st">&quot;b&quot;</span><span class="op">]</span>.as_u64() <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-14" title="14">    value</a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-16" title="16">    <span class="kw">return</span> <span class="cn">Err</span>(<span class="st">&quot;invalid&quot;</span>.into())</a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="op">}</span>;</a>
+<a class="sourceLine" id="cb6-18" title="18"></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="kw">let</span> c = <span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(value) = v<span class="op">[</span><span class="st">&quot;c&quot;</span><span class="op">]</span>.as_u64() <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-20" title="20">    value</a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-22" title="22">    <span class="kw">return</span> <span class="cn">Err</span>(<span class="st">&quot;invalid&quot;</span>.into())</a>
+<a class="sourceLine" id="cb6-23" title="23"><span class="op">}</span>;</a>
+<a class="sourceLine" id="cb6-24" title="24"></a>
+<a class="sourceLine" id="cb6-25" title="25"><span class="kw">let</span> res = Response <span class="op">{</span> a, b, c <span class="op">}</span>;</a></code></pre></div>
 <aside class="notes">
-<p>Okay, now it got complicated.</p>
+<p>Okay, now it got complicated. You don’t have to read all that.</p>
+<p><em>scroll through code</em></p>
 <p>And it will get worse when we add more fields!</p>
-<p>But is it really necessary? This looks very generic and not specific to our <em>actual</em> problem.</p>
-<ol type="1">
-<li>How much do I need to <strong>read</strong>? Lots</li>
-<li>How much do I need to <strong>write</strong> to make a change? Lots</li>
-<li>How easy is it to <strong>identify the core concepts</strong>? <code>if let Some()</code> whatever</li>
-</ol>
+<p>But is it really necessary? This looks very repetitive and not specific to our <em>actual</em> problem.</p>
 </aside>
 </section>
 <section class="slide level1">
 
 <h2 id="derive-it.">Derive it.</h2>
 <div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb7-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>Deserialize<span class="at">)]</span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="kw">struct</span> Response <span class="op">{</span> a: <span class="dt">u64</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">struct</span> Response <span class="op">{</span> a: <span class="dt">u64</span>, b: <span class="dt">u64</span>, c: <span class="dt">u64</span> <span class="op">}</span></a>
 <a class="sourceLine" id="cb7-3" title="3"></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="kw">let</span> v: Response =</a>
-<a class="sourceLine" id="cb7-5" title="5">    <span class="pp">serde_json::</span>from_str(<span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">a</span><span class="sc">\&quot;</span><span class="st">: 42}&quot;</span>)?;</a></code></pre></div>
+<a class="sourceLine" id="cb7-4" title="4"><span class="kw">let</span> v: Response = <span class="pp">serde_json::</span>from_str(</a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">a</span><span class="sc">\&quot;</span><span class="st">: 4, </span><span class="sc">\&quot;</span><span class="st">b</span><span class="sc">\&quot;</span><span class="st">: 8, </span><span class="sc">\&quot;</span><span class="st">c</span><span class="sc">\&quot;</span><span class="st">: 15}&quot;</span></a>
+<a class="sourceLine" id="cb7-6" title="6">)?;</a></code></pre></div>
 <aside class="notes">
 <p>Wow, that’s super neat!</p>
+<p>We just said <em>what</em> we wanted to happen: Deserialize something into this struct.</p>
 <p>And: This generates better code, too: It doesn’t allocate a <code>Value</code> and it has better errors, too!</p>
-<ol type="1">
-<li>How much do I need to <strong>read</strong>? just the struct really</li>
-<li>How much do I need to <strong>write</strong> to make a change? add to the struct; maybe attributes</li>
-<li>How easy is it to <strong>identify the core concepts</strong>? yes: deserialization!</li>
-</ol>
 </aside>
 </section>
 <section id="command-line-arguments" class="slide level1">
@@ -388,30 +378,28 @@ add combinators, names very similar to other PLs</li>
 <a class="sourceLine" id="cb8-5" title="5">    .expect(<span class="st">&quot;USAGE: tool &lt;input&gt; &lt;output&gt;&quot;</span>);</a></code></pre></div>
 <aside class="notes">
 <p>Simple enough: We want our tool to read two CLI args. So we read the first two entries in the global <code>args</code>.</p>
-<ol type="1">
-<li>How much do I need to <strong>read</strong>? lots</li>
-<li>How much do I need to <strong>write</strong> to make a change? depends on what you need: a parser maybe?</li>
-<li>How easy is it to <strong>identify the core concepts</strong>? easy: argument positions</li>
-</ol>
 <p>Hm. Can we make it use flags instead of positional arguments?</p>
 </aside>
 </section>
 <section class="slide level1">
 
-<h2 id="new-requirements-tool--o-output.file-input.file">New requirements: <code>tool -o Output.file Input.file</code></h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">let</span> <span class="kw">mut</span> opts = <span class="pp">Options::</span>new();</a>
-<a class="sourceLine" id="cb9-2" title="2">opts.optopt(<span class="st">&quot;o&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;set output file name&quot;</span>, <span class="st">&quot;NAME&quot;</span>);</a>
-<a class="sourceLine" id="cb9-3" title="3"><span class="kw">let</span> matches = <span class="kw">match</span> opts.parse(&amp;args<span class="op">[</span><span class="dv">1</span>..<span class="op">]</span>) <span class="op">{</span></a>
-<a class="sourceLine" id="cb9-4" title="4">    <span class="cn">Ok</span>(m) =&gt; <span class="op">{</span> m <span class="op">}</span></a>
-<a class="sourceLine" id="cb9-5" title="5">    <span class="cn">Err</span>(f) =&gt; <span class="op">{</span> <span class="pp">panic!</span>(f.to_string()) <span class="op">}</span></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="op">}</span>;</a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="kw">let</span> output = matches.opt_str(<span class="st">&quot;o&quot;</span>);</a>
-<a class="sourceLine" id="cb9-8" title="8"><span class="kw">let</span> input = <span class="kw">if</span> !matches.free.is_empty() <span class="op">{</span></a>
-<a class="sourceLine" id="cb9-9" title="9">    matches.free<span class="op">[</span><span class="dv">0</span><span class="op">]</span>.clone()</a>
-<a class="sourceLine" id="cb9-10" title="10"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb9-11" title="11">    print_usage(&amp;program, opts);</a>
-<a class="sourceLine" id="cb9-12" title="12">    <span class="kw">return</span>;</a>
-<a class="sourceLine" id="cb9-13" title="13"><span class="op">}</span>;</a></code></pre></div>
+<h2 id="new-requirements-flags">New requirements: Flags</h2>
+<p><code>tool -o Output.file Input.file</code></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">use</span> <span class="pp">getopts::</span>Options;</a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">let</span> <span class="kw">mut</span> opts = <span class="pp">Options::</span>new();</a>
+<a class="sourceLine" id="cb9-4" title="4">opts.optopt(<span class="st">&quot;o&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;set output file name&quot;</span>, <span class="st">&quot;NAME&quot;</span>);</a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="kw">let</span> matches = <span class="kw">match</span> opts.parse(&amp;args<span class="op">[</span><span class="dv">1</span>..<span class="op">]</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-6" title="6">    <span class="cn">Ok</span>(m) =&gt; <span class="op">{</span> m <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-7" title="7">    <span class="cn">Err</span>(f) =&gt; <span class="op">{</span> <span class="pp">panic!</span>(f.to_string()) <span class="op">}</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="op">}</span>;</a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="kw">let</span> output = matches.opt_str(<span class="st">&quot;o&quot;</span>);</a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="kw">let</span> input = <span class="kw">if</span> !matches.free.is_empty() <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-11" title="11">    matches.free<span class="op">[</span><span class="dv">0</span><span class="op">]</span>.clone()</a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb9-13" title="13">    print_usage(&amp;program, opts);</a>
+<a class="sourceLine" id="cb9-14" title="14">    <span class="kw">return</span>;</a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="op">}</span>;</a></code></pre></div>
 <aside class="notes">
 <p>This is quite a lot of stuff. I wonder if there is way to abstract over it?</p>
 <ol type="1">
@@ -424,19 +412,21 @@ add combinators, names very similar to other PLs</li>
 <section class="slide level1">
 
 <h2 id="clap">Clap</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">let</span> matches = <span class="pp">App::</span>new(<span class="st">&quot;My Super Program&quot;</span>)</a>
-<a class="sourceLine" id="cb10-2" title="2">    .arg(<span class="pp">Arg::</span>with_name(<span class="st">&quot;output&quot;</span>)</a>
-<a class="sourceLine" id="cb10-3" title="3">        .help(<span class="st">&quot;Sets a output file&quot;</span>)</a>
-<a class="sourceLine" id="cb10-4" title="4">        .short(<span class="st">&quot;o&quot;</span>).long(<span class="st">&quot;output&quot;</span>)</a>
-<a class="sourceLine" id="cb10-5" title="5">        .takes_value(<span class="cn">true</span>))</a>
-<a class="sourceLine" id="cb10-6" title="6">    .arg(<span class="pp">Arg::</span>with_name(<span class="st">&quot;INPUT&quot;</span>)</a>
-<a class="sourceLine" id="cb10-7" title="7">        .help(<span class="st">&quot;Sets the input file to use&quot;</span>)</a>
-<a class="sourceLine" id="cb10-8" title="8">        .required(<span class="cn">true</span>).index(<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb10-9" title="9">    .get_matches();</a>
-<a class="sourceLine" id="cb10-10" title="10"></a>
-<a class="sourceLine" id="cb10-11" title="11"><span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(input) = matches.value_of(<span class="st">&quot;INPUT&quot;</span>) <span class="op">{</span></a>
-<a class="sourceLine" id="cb10-12" title="12">    <span class="co">// ...</span></a>
-<a class="sourceLine" id="cb10-13" title="13"><span class="op">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">use</span> <span class="pp">clap::</span><span class="op">{</span>Arg, App, SubCommand<span class="op">}</span>;</a>
+<a class="sourceLine" id="cb10-2" title="2"></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="kw">let</span> matches = <span class="pp">App::</span>new(<span class="st">&quot;My Super Program&quot;</span>)</a>
+<a class="sourceLine" id="cb10-4" title="4">    .arg(<span class="pp">Arg::</span>with_name(<span class="st">&quot;output&quot;</span>)</a>
+<a class="sourceLine" id="cb10-5" title="5">        .help(<span class="st">&quot;Sets a output file&quot;</span>)</a>
+<a class="sourceLine" id="cb10-6" title="6">        .short(<span class="st">&quot;o&quot;</span>).long(<span class="st">&quot;output&quot;</span>)</a>
+<a class="sourceLine" id="cb10-7" title="7">        .takes_value(<span class="cn">true</span>))</a>
+<a class="sourceLine" id="cb10-8" title="8">    .arg(<span class="pp">Arg::</span>with_name(<span class="st">&quot;INPUT&quot;</span>)</a>
+<a class="sourceLine" id="cb10-9" title="9">        .help(<span class="st">&quot;Sets the input file to use&quot;</span>)</a>
+<a class="sourceLine" id="cb10-10" title="10">        .required(<span class="cn">true</span>).index(<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb10-11" title="11">    .get_matches();</a>
+<a class="sourceLine" id="cb10-12" title="12"></a>
+<a class="sourceLine" id="cb10-13" title="13"><span class="kw">if</span> <span class="kw">let</span> <span class="cn">Some</span>(input) = matches.value_of(<span class="st">&quot;INPUT&quot;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb10-14" title="14">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb10-15" title="15"><span class="op">}</span></a></code></pre></div>
 <aside class="notes">
 <p>This is pretty good already. Somehow, we are back to writing code that converts data, though. Weird.</p>
 <ol type="1">
@@ -450,14 +440,16 @@ add combinators, names very similar to other PLs</li>
 
 <h2 id="isnt-this-a-data-structure-too">Isn’t this a data structure, too?</h2>
 <div class="fragment">
-<div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb11-1" title="1"><span class="at">#[</span>derive<span class="at">(</span>StructOpt<span class="at">)]</span></a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="kw">struct</span> Cli <span class="op">{</span></a>
-<a class="sourceLine" id="cb11-3" title="3">    <span class="co">/// Sets the input file to use</span></a>
-<a class="sourceLine" id="cb11-4" title="4">    input: <span class="dt">String</span>,</a>
-<a class="sourceLine" id="cb11-5" title="5">    <span class="co">/// Sets a output file</span></a>
-<a class="sourceLine" id="cb11-6" title="6">    <span class="at">#[</span>structopt<span class="at">(</span>short <span class="at">=</span> <span class="st">&quot;o&quot;</span><span class="at">,</span> long <span class="at">=</span> <span class="st">&quot;output&quot;</span><span class="at">)]</span></a>
-<a class="sourceLine" id="cb11-7" title="7">    output: <span class="dt">String</span>,</a>
-<a class="sourceLine" id="cb11-8" title="8"><span class="op">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode rust"><code class="sourceCode rust"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">use</span> <span class="pp">structopt::</span>StructOpt;</a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="at">#[</span>derive<span class="at">(</span>StructOpt<span class="at">)]</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="kw">struct</span> Cli <span class="op">{</span></a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="co">/// Sets the input file to use</span></a>
+<a class="sourceLine" id="cb11-6" title="6">    input: <span class="dt">String</span>,</a>
+<a class="sourceLine" id="cb11-7" title="7">    <span class="co">/// Sets a output file</span></a>
+<a class="sourceLine" id="cb11-8" title="8">    <span class="at">#[</span>structopt<span class="at">(</span>short <span class="at">=</span> <span class="st">&quot;o&quot;</span><span class="at">,</span> long <span class="at">=</span> <span class="st">&quot;output&quot;</span><span class="at">)]</span></a>
+<a class="sourceLine" id="cb11-9" title="9">    output: <span class="dt">String</span>,</a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="op">}</span></a></code></pre></div>
 <aside class="notes">
 <p>Woah. This is super concise.</p>
 <ol type="1">
@@ -603,6 +595,8 @@ add combinators, names very similar to other PLs</li>
       // Full list of configuration options available at:
       // https://github.com/hakimel/reveal.js#configuration
       Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: 0,
         // Display a presentation progress bar
         progress: true,
         // Display the page number of the current slide

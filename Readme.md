@@ -8,6 +8,8 @@ categories:
 progress: true
 slideNumber: true
 history: true
+navigation: false
+controls: 0
 ---
 # Hi, I'm Pascal Hertleif
 
@@ -46,7 +48,7 @@ Oh yes, the very beginning.
 
 - - -
 
-## Simply put,
+## To make a program work,
 
 - you tell a computer what to do,
 - in tiny steps, specific instructions.
@@ -56,7 +58,7 @@ Oh yes, the very beginning.
 - This is imperative.
 - Hard to reason about the general behavior of a program
 
-- - -
+. . .
 
 “This is RustFest, Pascal, not AssemblyCamp”
 
@@ -76,15 +78,20 @@ Okay, fine, but what does that have to do with declarative programming?
 
 Let's approach this from a different perspective, then.
 
+:::
+
+- - -
+
+## Maintainable code
+
+::: notes
+
 Having maintainable code is high in demand,
 but it's hard to get there.
 
 :::
 
-# Maintainable code
-
 - - -
-
 
 ## Is my code maintainable?
 
@@ -100,8 +107,6 @@ but it's hard to get there.
 
 Here are a number of somewhat arbitrary questions that you can ask about a code base
 
-We'll use them later on to evaluate some examples
-
 Since this is a very broad topic, the questions are very generic.
 Add ones that are specific to your problem domain as needed!
 
@@ -109,29 +114,48 @@ Add ones that are specific to your problem domain as needed!
 
 # What is 'Declarative Programming'
 
+. . .
+
+> Declarative programming is often defined as any style of programming that is not imperative.
+>
+> – [Wikipedia](https://en.wikipedia.org/w/index.php?title=Declarative_programming&oldid=846955022)
+
+::: notes
+
+Let's see what Wikipedia has to say about that.
+
+Ah, hm. Not that helpful.
+
+Actually:
+We could start a discussion around "what _true_ declarative programming" is,
+how it differs from "functional programming", and all that.
+
+Rust is, to me, quite pragmatic:
+It has functional elements,
+and indeed  allows you to write code that I'd call declarative,
+but also embraces mutability
+and let's you write in a quite procedural style as well.
+
+:::
+
 - - -
 
 ## What instead of How
 
-Don't write down all the steps how to get somewhere
+. . .
 
-Try to express what you want to accomplish
+- Don't write down all the steps how to get somewhere
+- Express what you want to accomplish
 
-- - -
+. . .
 
-## How?
+How?
 
-Identify concepts and extract their behavior
+. . .
 
-Abstract over control flow
-
-Compose your application from smaller pieces
-
-::: notes
-
-'Declarative Programming' ≠ 'Functional Programming'
-
-:::
+- Identify concepts and extract their behavior
+- Abstract over control flow
+- Compose your application from smaller pieces
 
 - - -
 
@@ -197,28 +221,20 @@ so it'll be the first example.
 
 ```rust
 let xs = vec!["lorem", "ipsum", "dolor"];
-for x in &xs {
-  if x.ends_with('m') {
-    return Some(x);
+
+for i in 0..xs.len() {
+  if xs[i].ends_with('m') {
+    return Some(xs[i]);
   }
 }
-
-None
+return None;
 ```
 
 ::: notes
 
 Since we're in Italy I thought I'd go with latin instead of "foobar".
 
-1. How much do I need to **read** to understand what’s going on?
-
-    trivial
-2. How much do I need to **write** to make a change?
-
-    depdends
-3. How easy is it to **identify the core concepts**?
-
-    `for` `if` `return` <- a lot of control flow!
+This is simple enough, imperative code.
 
 :::
 
@@ -228,29 +244,26 @@ Since we're in Italy I thought I'd go with latin instead of "foobar".
 
 ```rust
 let xs = vec!["lorem", "ipsum", "dolor"];
+
 let mut result = Vec::new();
-for x in &xs {
-  if result.len() <= 5 && x.ends_with('m') {
-    result.push(x);
+for i in 0..xs.len() {
+  if result.len() <= 5 && xs[i].ends_with('m') {
+    result.push(xs[i]);
   }
 }
-result
+return result;
 ```
 
 ::: notes
 
-1. How much do I need to **read** to understand what’s going on?
+It's okay if you're used to reading this code of code?
 
-    It's okay if you're used to reading this code of code?
-    nuances in the details: find that `5`, parse `<=` correctly
-3. How much do I need to **write** to make a change?
+Nuances in the details: find that `5`, parse `<=` correctly
 
-    depends on the change: maybe a lot
-4. How easy is it to **identify the core concepts**?
-
-    find elements up to a limit?
+And the font I use even uses ligatures make that "less than or equal" look pretty!
 
 DONT SAY: We totally forgot about short circuiting after we've found 5 elements!
+
 :::
 
 - - -
@@ -273,17 +286,9 @@ but gives names to the concepts we've just talked about.
 This might be harder to read if you're not used to it,
 but it gets better once you've seen this style a few times.
 
-1. How much do I need to **read** to understand what’s going on?
+The method names are the concepts used!
 
-    4 lines
-2. How much do I need to **write** to make a change?
-
-    add combinators, names very similar to other PLs
-3. How easy is it to **identify the core concepts**?
-
-    The method names are the concepts used!
-
-And this is even faster than the loop we've just written:
+And this is faster than the loop we've just written:
 Iterators are lazy. This will stop after the 5th matched element,
 but in our loop we forgot to write the early return!
 
@@ -312,10 +317,12 @@ let answer = xs.iter()
 
 # Parse JSON
 
+`{"a": 4}`
+
 ::: notes
 
 The next example is about parsing data.
-Here, from a string of JSON, into something we can use in out code.
+Here, from a string of JSON, into something we can use in our code.
 
 :::
 
@@ -336,24 +343,20 @@ if let Some(value) = v["a"].as_u64() {
 
 Simple enough; it's a trivial example after all.
 
-1. How much do I need to **read**?
-    Four lines: understanding `v["a"].as_u64()`
-2. How much do I need to **write** to make a change?
-    Now it gets interesting: It depends!
-3. How easy is it to **identify the core concepts**?
-    Too little code to tell what the core concept is really.
-
 :::
 
 - - -
 
-## New requirements! This structure now has three fields
+## New requirements!
+
+This structure now has three fields
 
 ```rust
-struct Response { a: u64, b: u64, c: u64 }
+let v: serde_json::Value = serde_json::from_str(
+    "{\"a\": 4, \"b\": 8, \"c\": 15}"
+)?;
 
-let v: serde_json::Value =
-    serde_json::from_str("{\"a\": 4, \"b\": 8, \"c\": 15}")?;
+struct Response { a: u64, b: u64, c: u64 }
 
 let a = if let Some(value) = v["a"].as_u64() {
     value
@@ -379,18 +382,14 @@ let res = Response { a, b, c };
 ::: notes
 
 Okay, now it got complicated.
+You don't have to read all that.
+
+_scroll through code_
 
 And it will get worse when we add more fields!
 
 But is it really necessary?
-This looks very generic and not specific to our _actual_ problem.
-
-1. How much do I need to **read**?
-    Lots
-2. How much do I need to **write** to make a change?
-    Lots
-3. How easy is it to **identify the core concepts**?
-    `if let Some()` whatever
+This looks very repetitive and not specific to our _actual_ problem.
 
 :::
 
@@ -400,25 +399,22 @@ This looks very generic and not specific to our _actual_ problem.
 
 ```rust
 #[derive(Deserialize)]
-struct Response { a: u64 }
+struct Response { a: u64, b: u64, c: u64 }
 
-let v: Response =
-    serde_json::from_str("{\"a\": 42}")?;
+let v: Response = serde_json::from_str(
+    "{\"a\": 4, \"b\": 8, \"c\": 15}"
+)?;
 ```
 
 ::: notes
 
 Wow, that's super neat!
 
+We just said _what_ we wanted to happen:
+Deserialize something into this struct.
+
 And: This generates better code, too:
 It doesn't allocate a `Value` and it has better errors, too!
-
-1. How much do I need to **read**?
-    just the struct really
-2. How much do I need to **write** to make a change?
-    add to the struct; maybe attributes
-3. How easy is it to **identify the core concepts**?
-    yes: deserialization!
 
 :::
 
@@ -450,22 +446,19 @@ let output = args.next()
 Simple enough: We want our tool to read two CLI args.
 So we read the first two entries in the global `args`.
 
-1. How much do I need to **read**?
-    lots
-2. How much do I need to **write** to make a change?
-    depends on what you need: a parser maybe?
-3. How easy is it to **identify the core concepts**?
-    easy: argument positions
-
 Hm. Can we make it use flags instead of positional arguments?
 
 :::
 
 - - -
 
-## New requirements: `tool -o Output.file Input.file`
+## New requirements: Flags
+
+`tool -o Output.file Input.file`
 
 ```rust
+use getopts::Options;
+
 let mut opts = Options::new();
 opts.optopt("o", "", "set output file name", "NAME");
 let matches = match opts.parse(&args[1..]) {
@@ -500,6 +493,8 @@ I wonder if there is way to abstract over it?
 ## Clap
 
 ```rust
+use clap::{Arg, App, SubCommand};
+
 let matches = App::new("My Super Program")
     .arg(Arg::with_name("output")
         .help("Sets a output file")
@@ -537,6 +532,8 @@ Weird.
 . . .
 
 ```rust
+use structopt::StructOpt;
+
 #[derive(StructOpt)]
 struct Cli {
     /// Sets the input file to use
